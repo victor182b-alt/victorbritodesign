@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>document.documentElement.classList.add('js');</script>
+  <title>Victor Brito — Product, UX e Visual Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Iosevka+Charon+Mono:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #0a0a0a;
+      --color-bg-alt: #040505;
+      --color-surface: #141414;
+      --color-text: #ffffff;
+      --color-text-muted: rgba(255, 255, 255, .75);
+      --color-border: rgba(255, 255, 255, .08);
+      --color-primary: #0509ff;
+      --container: 1012px;
+      --gutter: 16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    /* âncoras (ex.: "Ver trabalhos" → Projetos) rolam suavemente e param abaixo do cabeçalho fixo */
+    html { scroll-behavior: smooth; }
+    [id] { scroll-margin-top: 64px; }
+
+    body {
+      margin: 0;
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: 'Inter', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: 100%;
+      max-width: calc(var(--container) + var(--gutter) * 2);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-primary);
+      color: var(--color-text);
+      font-weight: 700;
+      border: 1px solid transparent;
+      border-radius: 360px;
+      white-space: nowrap;
+      transition: filter .2s ease, transform .3s ease-out, background-color .2s ease;
+    }
+    .btn:hover { filter: brightness(1.15); transform: translateY(-4px); }
+    .btn:active { transform: scale(.97); }
+    .btn--outline { background: transparent; border-color: var(--color-text); }
+    .btn--outline:hover { filter: none; background: rgba(255, 255, 255, .08); }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--color-bg-alt);
+      padding: 12px 0;
+      transition: background-color .3s ease, box-shadow .3s ease;
+    }
+    .site-header.is-scrolled {
+      background: rgba(4, 5, 5, .72);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 var(--color-border);
+    }
+    .header__logo img { transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
+    .header__logo:hover img { transform: rotate(-12deg) scale(1.08); }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header__logo img { display: block; width: 40px; height: 40px; }
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 14px;
+    }
+    .nav__link:hover { opacity: .75; }
+    .nav .btn { width: 88px; padding: 4px 6px; font-size: 14px; }
+
+    /* Hero */
+    .hero { padding: 48px 0 80px; }
+    .hero__inner {
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      gap: 72px;
+    }
+    .hero__main {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+      width: 610px; /* Figma: 601px; o navegador renderiza a Inter um pouco mais larga e "UX e Visual Designer." precisa de 604px */
+      flex-shrink: 0;
+    }
+    .hero__content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .hero__title {
+      margin: 0;
+      font-size: 56px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+    .hero__body {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 32px;
+    }
+    .hero__text {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 24px; }
+    .hero__actions .btn { padding: 12px 16px; font-size: 18px; }
+
+    .hero__image {
+      position: relative;
+      flex: 0 0 308px;
+      margin: 0;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .hero__image img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .8s cubic-bezier(.2, .7, .2, 1);
+    }
+    .hero__image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10, 10, 10, 0) 21.222%, rgba(10, 10, 10, .6));
+      pointer-events: none;
+    }
+    .hero__image:hover img { transform: scale(1.04); }
+
+    /* Statistics */
+    .stats {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      margin: 0;
+      line-height: 1.2;
+    }
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .stat__value {
+      position: relative;
+      font-size: 40px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    /*
+      O valor final (invisível) define a largura do bloco; o valor em contagem fica
+      sobreposto e fora do fluxo, então números intermediários mais largos
+      (ex.: "+0,7 mi") não empurram os vizinhos nem quebram linha.
+    */
+    .stat__value-final { visibility: hidden; }
+    .stat__value-current { position: absolute; top: 0; left: 50%; transform: translateX(-50%); }
+    .stat__label { font-size: 24px; }
+
+    /* Section header (Projetos / Depoimentos) */
+    .section { padding: 80px 0; }
+    .section--alt { background: var(--color-bg-alt); }
+    .section__header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      max-width: 584px;
+      margin: 0 auto 48px;
+      text-align: center;
+    }
+    .section__title {
+      margin: 0;
+      font-size: 40px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+    .section__text {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.4;
+      color: var(--color-text-muted);
+    }
+    .section__header--wide { max-width: 674px; }
+
+    /* Experiência (seção clara) */
+    .section--light { background: #ffffff; color: #0a0a0a; }
+    .section--light .section__text { color: rgba(10, 10, 10, .75); }
+
+    /*
+      Ticker de logos (estilo Framer Ticker): faixa infinita com velocidade constante,
+      que desacelera suavemente no hover. O JS duplica o conjunto de logos até cobrir a
+      tela; sem JS, os logos ficam parados e centralizados.
+    */
+    .ticker {
+      --ticker-gap: 48px;
+      overflow: hidden;
+      margin-bottom: 48px;
+      -webkit-mask-image: linear-gradient(90deg, transparent 5.29%, #000 14.76%, #000 82.83%, transparent 91.35%);
+      mask-image: linear-gradient(90deg, transparent 5.29%, #000 14.76%, #000 82.83%, transparent 91.35%);
+    }
+    .ticker__track {
+      display: flex;
+      justify-content: center;
+      width: max-content;
+      min-width: 100%;
+      will-change: transform;
+    }
+    .ticker.is-running .ticker__track { justify-content: flex-start; }
+    .ticker__set {
+      display: flex;
+      align-items: center;
+      gap: var(--ticker-gap);
+      margin: 0;
+      padding: 0 var(--ticker-gap) 0 0;
+      list-style: none;
+    }
+    .ticker__set img { display: block; height: auto; }
+
+    /* Linha do tempo */
+    .timeline { max-width: 800px; margin: 0 auto; }
+    .timeline__company { display: flex; flex-direction: column; }
+    .timeline__header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-bottom: 20px;
+    }
+    .timeline__logo {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      background: #f0f0f0;
+      border-radius: 8px;
+      font-size: 22px;
+      font-weight: 900;
+    }
+    .timeline__name { margin: 0; font-size: 18px; font-weight: 700; }
+    .timeline__meta { margin: 2px 0 0; font-size: 14px; color: #666; }
+    .timeline__roles { margin: 0; padding: 0 0 0 64px; list-style: none; }
+    .timeline__role { display: flex; align-items: flex-start; gap: 16px; padding-bottom: 24px; }
+    .timeline__role:last-child { padding-bottom: 8px; }
+    .timeline__role > img { display: block; flex-shrink: 0; }
+    .timeline__info { display: flex; flex-direction: column; gap: 4px; padding-left: 8px; }
+    .timeline__role-title { margin: 0; font-size: 16px; font-weight: 700; }
+    .timeline__info p { margin: 0; font-size: 14px; color: #666; }
+    .timeline__divider { height: 1px; margin: 0; border: 0; background: rgba(10, 10, 10, .08); }
+
+    /* Depoimentos: brilho de fundo do Figma que se dissolve no preto */
+    .section--glow {
+      background:
+        linear-gradient(to bottom, rgba(10, 10, 10, 0) 28.668%, #0a0a0a 96.603%),
+        url("assets/BG.png") top center / 100% auto no-repeat,
+        var(--color-bg);
+    }
+
+    /* Projects */
+    .projects {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .projects__row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .project-card {
+      position: relative;
+      isolation: isolate;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+      gap: 12px;
+      height: 440px;
+      padding: 24px;
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .project-card__media {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      overflow: hidden;
+      transition: transform .6s cubic-bezier(.2, .7, .2, 1);
+    }
+    .project-card__media img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      object-fit: cover;
+    }
+    /* enquadramentos definidos no Figma */
+    .project-card__media--contabilizei img {
+      inset: auto;
+      left: -32.44%;
+      top: -23.88%;
+      width: 140.27%;
+      height: 129.11%;
+    }
+    .project-card__media--tech-integra img {
+      inset: auto;
+      left: -24.42%;
+      top: -10%;
+      width: 148.85%;
+      height: 111.59%;
+    }
+    .project-card__media--omaha img {
+      inset: auto;
+      left: -20.91%;
+      top: -23.23%;
+      width: 141.63%;
+      height: 147.22%;
+    }
+    .project-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 24.443%, rgba(10, 10, 10, .95) 81.477%);
+    }
+    .project-card:hover .project-card__media,
+    .project-card:focus-visible .project-card__media { transform: scale(1.08); }
+    .project-card__link img { transition: transform .3s ease; }
+    .project-card:hover .project-card__link img,
+    .project-card:focus-visible .project-card__link img { transform: translateX(4px); }
+    .project-card { transition: border-color .3s ease; }
+    .project-card:hover { border-color: rgba(255, 255, 255, .2); }
+    .project-card:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 4px; }
+
+    .project-card__tag {
+      padding: 4px 10px;
+      background: rgba(45, 44, 45, .32);
+      border: .5px solid rgba(255, 255, 255, .35);
+      border-radius: 360px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .project-card__title {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .project-card__text {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, .8);
+    }
+    .project-card__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .project-card__link img { display: block; width: 16px; height: 16px; }
+
+    /* Testimonials */
+    .testimonials__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .testimonial {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      height: 100%;
+      margin: 0;
+      padding: 32px 24px 24px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      transition: border-color .2s ease, transform .2s ease;
+    }
+    .testimonial:hover {
+      border-color: var(--color-primary);
+      transform: translateY(-4px);
+    }
+    .testimonial__quote {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 0;
+      padding-bottom: 16px;
+    }
+    .testimonial__mark {
+      height: 31px;
+      font-family: 'Iosevka Charon Mono', ui-monospace, monospace;
+      font-size: 72px;
+      font-weight: 700;
+      line-height: 48px;
+      color: #1e1e1e;
+    }
+    .testimonial__quote p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.2;
+      white-space: pre-line;
+    }
+    .testimonial__name { display: block; font-size: 16px; font-weight: 700; font-style: normal; }
+    .testimonial__role { display: block; margin-top: 2px; font-size: 14px; color: rgba(255, 255, 255, .6); }
+
+    /* Footer */
+    .site-footer { background: var(--color-bg-alt); padding: 12px 0; }
+    .site-footer .container { display: flex; justify-content: center; }
+    .site-footer img { display: block; width: 40px; height: 40px; }
+
+    /*
+      Animações de entrada no estilo fadeInUp (referência: topdon.com):
+      cada bloco parte 100% da própria altura abaixo, invisível, e sobe em 1s.
+      Só escondem o conteúdo quando o JS está ativo.
+    */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translate3d(0, 100%, 0); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes imageSettle {
+      from { transform: scale(1.2); }
+      to   { transform: none; }
+    }
+    .js [data-reveal] { opacity: 0; transform: translate3d(0, 100%, 0); }
+    .js [data-reveal].is-visible {
+      opacity: 1;
+      transform: none;
+      /* "backwards" devolve o transform ao CSS normal no fim, liberando o hover */
+      animation: fadeInUp 1s ease var(--delay, 0s) backwards;
+    }
+    .js .hero__image[data-reveal].is-visible img {
+      animation: imageSettle 1.8s cubic-bezier(.2, .7, .2, 1) var(--delay, 0s) backwards;
+    }
+    /* recorta os blocos enquanto sobem, como uma máscara na borda da seção */
+    .hero, .section { overflow: clip; }
+
+    /* Hover flutuante (sobe 8px, .3s ease-out) */
+    .js .project-card.is-visible,
+    .testimonial {
+      transition: transform .3s ease-out, border-color .3s ease;
+    }
+    .js .project-card.is-visible:hover,
+    .js .project-card.is-visible:focus-visible,
+    .testimonial:hover { transform: translateY(-8px); }
+
+    @media (max-width: 900px) {
+      .ticker { --ticker-gap: 32px; }
+      .hero__inner { flex-direction: column; gap: 48px; }
+      .hero__main { width: 100%; }
+      .hero__image { flex: none; aspect-ratio: 348 / 393; max-width: 400px; width: 100%; }
+      .testimonials__grid { grid-template-columns: 1fr; max-width: 584px; margin: 0 auto; }
+
+      /* em telas menores o enquadramento fixo distorce a imagem: volta para "cover" mantendo o foco */
+      .project-card__media--contabilizei img,
+      .project-card__media--tech-integra img,
+      .project-card__media--omaha img { inset: 0; width: 100%; height: 100%; }
+      .project-card__media--contabilizei img { object-position: 59% 57%; }
+    }
+
+    @media (max-width: 700px) {
+      .projects { gap: 16px; }
+      .projects__row { grid-template-columns: 1fr; gap: 16px; }
+      .project-card { height: 440px; }
+    }
+
+    /* Mobile (Figma "Site — Mobile": frame de 390px, margem de 20px) */
+    @media (max-width: 600px) {
+      :root { --gutter: 20px; }
+      .hero { padding: 32px 0 56px; }
+      .hero__inner { gap: 32px; }
+      .hero__main { gap: 40px; }
+      /* foto vem primeiro, na largura toda */
+      .hero__image { order: -1; max-width: none; aspect-ratio: 350 / 380; }
+      .hero__title { font-size: 36px; }
+      .hero__text { font-size: 18px; }
+      .hero__text br { display: none; }
+      .hero__body { gap: 24px; }
+      /* as três estatísticas continuam lado a lado, menores */
+      .stats { gap: 8px; }
+      .stat__value { font-size: 24px; }
+      .stat__label { font-size: 13px; }
+      .section { padding: 56px 0; }
+      .section__title { font-size: 28px; }
+      .section__text { font-size: 16px; }
+      .section__header { margin-bottom: 32px; }
+      .ticker { margin-bottom: 32px; }
+      .testimonials__grid { gap: 16px; }
+      .timeline__roles { padding-left: 16px; }
+      .timeline__info p { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-header">
+    <header class="container header">
+      <a href="#" class="header__logo" aria-label="Início">
+        <img src="assets/logo.png" alt="Logo Victor Brito" width="40" height="40">
+      </a>
+      <nav class="nav">
+        <a href="#sobre" class="nav__link">Sobre mim</a>
+        <a href="#contato" class="btn">Contato</a>
+      </nav>
+    </header>
+  </div>
+
+  <main>
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__main">
+          <div class="hero__content">
+            <h1 class="hero__title" data-reveal style="--delay: .1s">Victor Brito, Product, UX e Visual Designer.</h1>
+            <div class="hero__body">
+              <p class="hero__text" data-reveal style="--delay: .25s">Apaixonado por criar interfaces intuitivas e atraentes que melhoram a experiência do usuário <br>e geram impacto real no negócio.</p>
+              <div class="hero__actions" data-reveal style="--delay: .4s">
+                <a href="#projetos" class="btn">Ver trabalhos</a>
+                <a href="#contato" class="btn btn--outline">Contato</a>
+              </div>
+            </div>
+          </div>
+
+          <dl class="stats" data-reveal style="--delay: .55s">
+            <div class="stat">
+              <dt class="stat__label" style="order: 2">em MRR</dt>
+              <dd class="stat__value" style="margin: 0; order: 1" data-count="500" data-prefix="+" data-suffix=" mil"></dd>
+            </div>
+            <div class="stat">
+              <dt class="stat__label" style="order: 2">em market share</dt>
+              <dd class="stat__value" style="margin: 0; order: 1" data-count="10" data-prefix="+" data-suffix="%"></dd>
+            </div>
+            <div class="stat">
+              <dt class="stat__label" style="order: 2">de carreira</dt>
+              <dd class="stat__value" style="margin: 0; order: 1" data-count="4" data-prefix="+" data-suffix=" anos"></dd>
+            </div>
+          </dl>
+        </div>
+
+        <figure class="hero__image" data-reveal="zoom" style="--delay: .2s">
+          <img src="assets/foto-perfil.png" alt="Foto de Victor Brito sorrindo, de óculos e camiseta preta" width="1024" height="1024">
+        </figure>
+      </div>
+    </section>
+
+    <section class="section section--alt" id="projetos" aria-labelledby="projetos-titulo">
+      <div class="container">
+        <div class="section__header" data-reveal>
+          <h2 class="section__title" id="projetos-titulo">Projetos em destaque</h2>
+          <p class="section__text">Uma seleção de trabalhos em que design e estratégia geraram resultado real para o negócio.</p>
+        </div>
+
+        <div class="projects">
+          <a href="formalizar.html" class="project-card" data-reveal>
+            <div class="project-card__media project-card__media--contabilizei" aria-hidden="true">
+              <img src="assets/mockup formalizar.png" alt="">
+            </div>
+            <span class="project-card__tag">Landing page · Web</span>
+            <h3 class="project-card__title">Contabilizei</h3>
+            <p class="project-card__text">Landing page para a maior contabilidade online do Brasil, focada em gerar conversas com contadores.</p>
+            <span class="project-card__link">Ver projeto <img src="assets/icon-arrow-right.svg" alt="" width="16" height="16"></span>
+          </a>
+
+          <div class="projects__row">
+            <a href="tech-integra.html" class="project-card" data-reveal>
+              <div class="project-card__media project-card__media--tech-integra" aria-hidden="true">
+                <img src="assets/Imagem do evento.jpg" alt="">
+              </div>
+              <span class="project-card__tag">Identidade Visual</span>
+              <h3 class="project-card__title">Evento Tech Integra</h3>
+              <p class="project-card__text">Evento para o time de tecnologia da Contabilizei com mais de 250 participantes e 8 horas de duração.</p>
+              <span class="project-card__link">Ver projeto <img src="assets/icon-arrow-right.svg" alt="" width="16" height="16"></span>
+            </a>
+
+            <a href="#" class="project-card" data-reveal>
+              <div class="project-card__media project-card__media--omaha" aria-hidden="true">
+                <img src="assets/11-11-25-1080X1350-ESTAT-BLACK-NOVEMBER-ARG6-ECONOMIZE-900-REAIS-ALLTYPE-FUNDO-PRETO.png" alt="">
+              </div>
+              <span class="project-card__tag">Visual Design - Marketing de performance</span>
+              <h3 class="project-card__title">Omaha</h3>
+              <p class="project-card__text">Objetivo de aumento de Market Share em cidades com potencial de crescimento através da sazonalidade da Black Friday.</p>
+              <span class="project-card__link">Ver projeto <img src="assets/icon-arrow-right.svg" alt="" width="16" height="16"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--light" id="experiencia" aria-labelledby="experiencia-titulo">
+      <div class="container">
+        <div class="section__header section__header--wide" data-reveal>
+          <h2 class="section__title" id="experiencia-titulo">Experiência</h2>
+          <p class="section__text">Ao longo da minha trajetória tive a possibilidade de trabalhar com grandes marcas de diversos segmentos.</p>
+        </div>
+      </div>
+
+      <div class="ticker" data-ticker aria-label="Empresas com quem já trabalhei">
+        <div class="ticker__track">
+          <ul class="ticker__set">
+            <li><img src="assets/contabilizei-logo-fundo-transparente.png" alt="Contabilizei" width="194" height="93"></li>
+            <li><img src="assets/G4-master_logotipo_azul_rgb_flat.png" alt="G4" width="124" height="49"></li>
+            <li><img src="assets/Havanna_logo.png" alt="Havanna" width="194" height="53"></li>
+            <li><img src="assets/Logo Me Poupe.png" alt="Me Poupe!" width="195" height="53"></li>
+            <li><img src="assets/Logo Grupo Primo.png" alt="Grupo Primo" width="251" height="69"></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="timeline" data-reveal>
+          <article class="timeline__company">
+            <header class="timeline__header">
+              <span class="timeline__logo" aria-hidden="true">C.</span>
+              <div>
+                <h3 class="timeline__name">Contabilizei</h3>
+                <p class="timeline__meta">Tempo integral · 4 a 10 m · Híbrido</p>
+              </div>
+            </header>
+            <ol class="timeline__roles">
+              <li class="timeline__role">
+                <img src="assets/timeline-linha.svg" alt="" width="16" height="66">
+                <div class="timeline__info">
+                  <h4 class="timeline__role-title">Product Designer</h4>
+                  <p>mar. de 2026 – o momento · 8 meses</p>
+                  <p>São Paulo, Brasil</p>
+                </div>
+              </li>
+              <li class="timeline__role">
+                <img src="assets/timeline-ponto.svg" alt="" width="16" height="10">
+                <div class="timeline__info">
+                  <h4 class="timeline__role-title">Visual Designer</h4>
+                  <p>jan. de 2022 – o momento · 4 anos 10 meses</p>
+                  <p>São Paulo, São Paulo, Brasil</p>
+                </div>
+              </li>
+            </ol>
+          </article>
+          <hr class="timeline__divider">
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--glow" id="depoimentos" aria-labelledby="depoimentos-titulo">
+      <div class="container">
+        <div class="section__header section__header--wide" data-reveal>
+          <h2 class="section__title" id="depoimentos-titulo">O que dizem sobre o meu trabalho</h2>
+          <p class="section__text">Clientes e parceiros com quem tive o prazer de criar produtos e marcas.</p>
+        </div>
+
+        <ul class="testimonials__grid">
+          <li data-reveal>
+            <figure class="testimonial">
+              <blockquote class="testimonial__quote">
+                <span class="testimonial__mark" aria-hidden="true">&ldquo;</span>
+                <p>O Victor é um profissional multitarefas, que atua como visual e product designer com excelência, e consegue caminhar facilmente entre as áreas de design, produto e negócio. Além disso, ele tem uma ótima capacidade analítica e excelente relacionamento interpessoal.
+
+Com sua ajuda, nós conseguimos melhorar a apresentação de onboarding dos clientes, aumentando a nota de satisfação dos mesmos. Também entregamos campanhas de performance que trouxeram resultados efetivos para a empresa, com foco na conversão de usuários em clientes.</p>
+              </blockquote>
+              <figcaption>
+                <cite class="testimonial__name">Jéssica Zava Russilo</cite>
+                <span class="testimonial__role">Content Designer</span>
+              </figcaption>
+            </figure>
+          </li>
+          <li data-reveal>
+            <figure class="testimonial">
+              <blockquote class="testimonial__quote">
+                <span class="testimonial__mark" aria-hidden="true">&ldquo;</span>
+                <p>Brito é um profissional excepcional, tenho grande admiração e posso atestar sua dedicação, inteligência e que sempre teve um notável potencial de evolução rápida.
+
+Conhecido por sua educação, dedicação e concentração no trabalho. Sua capacidade de aprender e se adaptar rapidamente, aliada à sua criatividade, o tornam um talento promissor.
+
+Sua colaboração eficaz e compromisso com a excelência em suas entregas de projetos, destacam-no como um profissional confiável e dedicado.</p>
+              </blockquote>
+              <figcaption>
+                <cite class="testimonial__name">Patricia Vélez</cite>
+                <span class="testimonial__role">Visual Designer</span>
+              </figcaption>
+            </figure>
+          </li>
+          <li data-reveal>
+            <figure class="testimonial">
+              <blockquote class="testimonial__quote">
+                <span class="testimonial__mark" aria-hidden="true">&ldquo;</span>
+                <p>O incrível trabalho e a vontade de aprender do Victor são motivos de muita inspiração. Parabéns pelas realizações!</p>
+              </blockquote>
+              <figcaption>
+                <cite class="testimonial__name">Mariana Tami</cite>
+                <span class="testimonial__role">Bilingual COO</span>
+              </figcaption>
+            </figure>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <img src="assets/logo.png" alt="Logo Victor Brito" width="40" height="40">
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      /* Cabeçalho: fica translúcido com desfoque depois que a página rola */
+      const header = document.querySelector('.site-header');
+      const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      /*
+        Animações de entrada ao rolar. O bloco começa deslocado 100% da própria altura,
+        então a posição é calculada sem esse deslocamento (IntersectionObserver usaria
+        a caixa já deslocada e dispararia tarde demais).
+      */
+      let pending = [...document.querySelectorAll('[data-reveal]')];
+      const TRIGGER = 0.88; // dispara quando o topo do bloco passa de 88% da altura da tela
+
+      const checkReveals = () => {
+        pending = pending.filter(el => {
+          const offset = new DOMMatrixReadOnly(getComputedStyle(el).transform).m42;
+          const top = el.getBoundingClientRect().top - offset;
+          if (top > window.innerHeight * TRIGGER) return true;
+          el.classList.add('is-visible');
+          return false;
+        });
+        if (!pending.length) {
+          window.removeEventListener('scroll', onRevealScroll);
+          window.removeEventListener('resize', onRevealScroll);
+        }
+      };
+
+      let ticking = false;
+      const onRevealScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => { checkReveals(); ticking = false; });
+      };
+
+      window.addEventListener('scroll', onRevealScroll, { passive: true });
+      window.addEventListener('resize', onRevealScroll);
+      checkReveals();
+
+      /* Ticker de logos (estilo Framer Ticker) */
+      document.querySelectorAll('[data-ticker]').forEach(ticker => {
+        const track = ticker.querySelector('.ticker__track');
+        const original = track.querySelector('.ticker__set');
+        const SPEED = 60;         // px por segundo
+        const HOVER_FACTOR = 0.2; // velocidade relativa no hover
+        const EASE = 4;           // quão rápido a velocidade se ajusta (por segundo)
+
+        let setWidth = 0;
+        let offset = 0;
+        let speed = SPEED;
+        let target = SPEED;
+        let last = 0;
+        let rafId = null;
+        let visible = false;
+
+        // duplica o conjunto até cobrir a largura da faixa + um conjunto extra para o loop
+        const fill = () => {
+          track.querySelectorAll('.ticker__set[aria-hidden]').forEach(c => c.remove());
+          setWidth = original.getBoundingClientRect().width;
+          if (!setWidth) return;
+          const copies = Math.ceil(ticker.clientWidth / setWidth) + 1;
+          for (let i = 0; i < copies; i++) {
+            const clone = original.cloneNode(true);
+            clone.setAttribute('aria-hidden', 'true');
+            clone.querySelectorAll('img').forEach(img => { img.alt = ''; });
+            track.appendChild(clone);
+          }
+          ticker.classList.add('is-running');
+        };
+
+        const frame = now => {
+          const dt = last ? Math.min((now - last) / 1000, 0.1) : 0;
+          last = now;
+          speed += (target - speed) * Math.min(EASE * dt, 1);
+          offset = (offset + speed * dt) % setWidth;
+          track.style.transform = `translate3d(${-offset}px, 0, 0)`;
+          rafId = requestAnimationFrame(frame);
+        };
+
+        const start = () => { if (rafId === null && setWidth && visible) { last = 0; rafId = requestAnimationFrame(frame); } };
+        const stop = () => { if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; } };
+
+        ticker.addEventListener('mouseenter', () => { target = SPEED * HOVER_FACTOR; });
+        ticker.addEventListener('mouseleave', () => { target = SPEED; });
+
+        // só anima enquanto a faixa está visível
+        new IntersectionObserver(([entry]) => {
+          visible = entry.isIntersecting;
+          visible ? start() : stop();
+        }).observe(ticker);
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(fill, 150);
+        });
+
+        // espera os logos carregarem para medir a largura real do conjunto
+        const imgs = [...original.querySelectorAll('img')];
+        Promise.all(imgs.map(img => img.complete ? null : new Promise(r => { img.onload = img.onerror = r; })))
+          .then(() => { fill(); start(); });
+      });
+
+      /* Contagem dos big numbers */
+      const counters = document.querySelectorAll('[data-count]');
+      const DURATION = 2000;
+      const START_DELAY = 600; // espera a entrada da linha de estatísticas
+      const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+
+      const format = (el, value, decimals) => {
+        const { prefix = '', suffix = '' } = el.dataset;
+        // sem casas fixas: "+0,7 mi" durante a contagem e "+1 mi" no fim, sem "+1,0 mi"
+        return prefix + value.toLocaleString('pt-BR', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: decimals
+        }) + suffix;
+      };
+
+      counters.forEach(el => {
+        const target = Number(el.dataset.count);
+        const finalText = format(el, target, 0);
+        el.setAttribute('aria-label', finalText);
+        el.innerHTML =
+          `<span class="stat__value-final" aria-hidden="true">${finalText}</span>` +
+          `<span class="stat__value-current" aria-hidden="true">${format(el, 0, 0)}</span>`;
+      });
+
+      const animate = el => {
+        const target = Number(el.dataset.count);
+        const decimals = Number(el.dataset.decimals || 0);
+        const out = el.querySelector('.stat__value-current');
+        const start = performance.now() + START_DELAY;
+
+        const tick = now => {
+          const progress = Math.min(Math.max((now - start) / DURATION, 0), 1);
+          const value = target * easeOutCubic(progress);
+          out.textContent = progress < 1
+            ? format(el, decimals ? value : Math.round(value), decimals)
+            : format(el, target, 0);
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+
+      const counterObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          animate(entry.target);
+          counterObserver.unobserve(entry.target);
+        });
+      }, { threshold: 0.5 });
+
+      counters.forEach(el => counterObserver.observe(el));
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LP Formalizar — Victor Brito</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #0a0a0a;
+      --color-bg-alt: #040505;
+      --color-text: #ffffff;
+      --color-text-muted: rgba(255, 255, 255, .7);
+      --color-border: rgba(255, 255, 255, .08);
+      --color-primary: #0509ff;
+      --color-card: rgba(255, 255, 255, .04);
+      --color-card-border: rgba(255, 255, 255, .12);
+      --stage-bg: linear-gradient(180deg, #05216b 0%, #12172a 100%);
+      --container: 1008px;
+      --gutter: 16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--color-bg-alt);
+      color: var(--color-text);
+      font-family: 'Inter', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    .container {
+      width: 100%;
+      max-width: calc(var(--container) + var(--gutter) * 2);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-primary);
+      color: var(--color-text);
+      font-weight: 700;
+      border: 1px solid transparent;
+      border-radius: 360px;
+      white-space: nowrap;
+    }
+    .btn:hover { filter: brightness(1.15); }
+    .btn--outline { background: transparent; border-color: var(--color-text); }
+    .btn--outline:hover { filter: none; background: rgba(255, 255, 255, .08); }
+
+    /* Header (mesmo do index) */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--color-bg);
+      padding: 12px 0;
+    }
+    .site-header.is-scrolled {
+      background: rgba(4, 5, 5, .72);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 var(--color-border);
+    }
+    .header { display: flex; align-items: center; justify-content: space-between; }
+    .header__logo img { width: 40px; height: 40px; }
+    .nav { display: flex; align-items: center; gap: 24px; font-size: 14px; }
+    .nav__link:hover { opacity: .75; }
+    .nav .btn { width: 88px; padding: 4px 6px; font-size: 14px; }
+
+    /* Seções */
+    .section { padding: 80px 0; }
+    .stack { display: flex; flex-direction: column; gap: 48px; }
+    .section__header { display: flex; flex-direction: column; gap: 16px; }
+    .section__title { margin: 0; font-size: 40px; font-weight: 900; line-height: 1.1; }
+    .section__text { margin: 0; max-width: 760px; font-size: 18px; line-height: 1.4; color: var(--color-text-muted); }
+    .eyebrow { margin: 0 0 -4px; font-size: 12px; font-weight: 700; color: rgba(255, 255, 255, .5); }
+
+    .card {
+      background: var(--color-card);
+      border: 1px solid var(--color-card-border);
+      border-radius: 16px;
+    }
+
+    /* Celular com a LP rolando dentro da tela */
+    .phone {
+      --pw: 260px;
+      flex: none;
+      width: var(--pw);
+      aspect-ratio: 250 / 520;
+      padding: calc(var(--pw) * .035);
+      background: #0f0f12;
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: calc(var(--pw) * .16);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, .45);
+    }
+    .phone__screen {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+      border-radius: calc(var(--pw) * .125);
+      background: #3f4658;
+    }
+    /* Barra de status do iPhone, na cor do topo de cada LP */
+    .status {
+      position: relative;
+      flex: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: calc(var(--pw) * .108);
+      padding: 0 calc(var(--pw) * .075);
+      background: #3f4658;
+      color: #fff;
+      font-size: calc(var(--pw) * .046);
+      font-weight: 700;
+      letter-spacing: -.01em;
+    }
+    .status--blue { background: #022869; }
+    .status::after {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      width: 30%;
+      height: 60%;
+      background: #000;
+      border-radius: 999px;
+      transform: translateX(-50%);
+    }
+    .status svg { width: calc(var(--pw) * .2); height: calc(var(--pw) * .036); }
+    .phone__viewport { flex: 1; overflow: hidden; container-type: size; }
+    .phone__viewport img {
+      width: 100%;
+      height: auto;
+      animation: lpScroll 32s ease-in-out var(--scroll-delay, 0s) infinite alternate;
+    }
+    @keyframes lpScroll {
+      0%, 8%    { transform: translateY(0); }
+      92%, 100% { transform: translateY(calc(-100% + 100cqh)); }
+    }
+
+    /* Hero */
+    .hero { padding: 80px 0 56px; }
+    .hero .stack { gap: 40px; }
+    .hero__media { margin: 0; overflow: hidden; border-radius: 24px; aspect-ratio: 2400 / 964; background: #0b1220; }
+    .hero__media img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }
+
+    /* Composição inclinada (na seção A nova LP) */
+    .tilt {
+      position: relative;
+      aspect-ratio: 1008 / 640;
+      overflow: hidden;
+      border-radius: 24px;
+      background: var(--stage-bg);
+      container-type: inline-size;
+    }
+    .tilt__row {
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      display: flex;
+      align-items: center;
+      gap: 3.97cqw;
+      transform: translate(-50%, -50%) rotate(-16deg);
+    }
+    .tilt .phone { --pw: 24.8cqw; }
+
+    .back-link {
+      display: inline-flex;
+      align-self: flex-start;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-text-muted);
+    }
+    .back-link:hover { color: var(--color-text); }
+    .intro { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+    .tag {
+      padding: 4px 12px;
+      background: rgba(45, 44, 45, .6);
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 360px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .intro__title { margin: 0; font-size: 72px; font-weight: 900; line-height: 1.1; }
+    .intro__text { margin: 0; max-width: 760px; font-size: 24px; line-height: 1.4; color: rgba(255, 255, 255, .8); }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin: 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, .15);
+    }
+    .facts dt { font-size: 12px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: rgba(255, 255, 255, .5); }
+    .facts dd { margin: 6px 0 0; font-size: 16px; font-weight: 700; line-height: 1.4; }
+
+    /* O problema */
+    .about { display: grid; grid-template-columns: 320px 1fr; gap: 72px; }
+    .about .eyebrow { margin-bottom: 12px; }
+    .about__title { margin: 0; font-size: 40px; font-weight: 900; line-height: 1.1; }
+    .about__text { display: flex; flex-direction: column; gap: 20px; }
+    .about__text p { margin: 0; font-size: 18px; line-height: 1.5; color: rgba(255, 255, 255, .8); }
+
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 0; }
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 32px;
+      text-align: center;
+    }
+    .stat__value { margin: 0; font-size: 56px; font-weight: 900; line-height: 1.2; font-variant-numeric: tabular-nums; }
+    .stat__label { font-size: 18px; color: var(--color-text-muted); }
+
+    /* Diagnóstico */
+    .heatmaps {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 32px;
+      margin: 0;
+      padding: 48px;
+      border-radius: 24px;
+    }
+    .heatmaps figure { display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 0; }
+    .heatmaps img { border-radius: 12px; height: 527px; width: auto; }
+    .heatmaps figcaption { font-size: 14px; font-weight: 700; color: var(--color-text-muted); text-align: center; }
+
+    .hypotheses { margin: 0; padding: 0; list-style: none; counter-reset: hip; }
+    .hypotheses li {
+      display: grid;
+      grid-template-columns: 56px 320px 1fr;
+      gap: 32px;
+      padding: 24px 0;
+      border-top: 1px solid var(--color-card-border);
+      counter-increment: hip;
+    }
+    .hypotheses li::before {
+      content: counter(hip, decimal-leading-zero);
+      font-size: 24px;
+      font-weight: 900;
+      color: rgba(255, 255, 255, .5);
+    }
+    .hypotheses h3 { margin: 0; font-size: 24px; font-weight: 700; line-height: 1.3; }
+    .hypotheses p { margin: 0; font-size: 18px; line-height: 1.4; color: var(--color-text-muted); }
+
+    /* Ergonomia */
+    .media { margin: 0; border-radius: 16px; overflow: hidden; }
+    .media img { width: 100%; height: auto; }
+
+    /* Decisões */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .decision { display: flex; flex-direction: column; gap: 12px; padding: 32px; }
+    .decision h3 { margin: 0; font-size: 24px; font-weight: 700; line-height: 1.3; }
+    .decision p { margin: 0; font-size: 16px; line-height: 1.4; color: var(--color-text-muted); }
+
+    /* A nova LP */
+    .compare {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin: 0;
+      padding: 56px 48px;
+      border-radius: 24px;
+      background: var(--stage-bg);
+    }
+    .compare figure { display: flex; flex-direction: column; align-items: center; gap: 20px; margin: 0; }
+    .compare figcaption { font-size: 16px; font-weight: 700; }
+
+    /* Resultados: big numbers */
+    .bignums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 0; }
+    .bignum {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, .15);
+    }
+    .bignum dt { order: 2; font-size: 18px; font-weight: 700; }
+    .bignum dd {
+      order: 1;
+      margin: 0;
+      font-size: 96px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -.03em;
+      color: #3b6cff;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* CTA */
+    .cta { padding-bottom: 96px; text-align: center; }
+    .cta .section__header { align-items: center; margin-bottom: 24px; }
+    .cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; }
+    .cta__actions .btn { padding: 12px 16px; font-size: 18px; }
+
+    /* Footer */
+    .site-footer { background: var(--color-bg); padding: 12px 0; }
+    .site-footer .container { display: flex; justify-content: center; }
+    .site-footer img { width: 40px; height: 40px; }
+
+    @media (max-width: 900px) {
+      .about { grid-template-columns: 1fr; gap: 24px; }
+      .facts { grid-template-columns: repeat(2, 1fr); gap: 20px 16px; }
+      .hypotheses li { grid-template-columns: 1fr; gap: 8px; }
+      .heatmaps { gap: 12px; padding: 24px 16px; }
+      .heatmaps img { height: auto; width: 100%; }
+      .heatmaps figure:nth-child(1), .heatmaps figure:nth-child(2) { width: 42%; }
+      .heatmaps figure:nth-child(3) { width: 8%; }
+      .heatmaps figcaption { font-size: 12px; }
+      /* comparação vira carrossel horizontal */
+      .compare {
+        justify-content: flex-start;
+        gap: 20px;
+        padding: 32px 20px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+      }
+      .compare::-webkit-scrollbar { display: none; }
+      .compare figure { scroll-snap-align: center; }
+      .bignum dd { font-size: 64px; }
+    }
+
+    /* Mobile (Figma: frame de 390px, margem de 20px) */
+    @media (max-width: 600px) {
+      :root { --gutter: 20px; }
+      .section { padding: 56px 0; }
+      .stack { gap: 32px; }
+      .hero { padding-top: 32px; }
+      .hero .stack { gap: 32px; }
+      .hero__media { aspect-ratio: 350 / 260; border-radius: 16px; }
+      .tilt { aspect-ratio: 350 / 420; border-radius: 16px; }
+      .tilt .phone { --pw: 44cqw; }
+      .intro__title { font-size: 40px; }
+      .intro__text { font-size: 18px; }
+      .section__title, .about__title { font-size: 28px; }
+      .section__text, .about__text p { font-size: 16px; }
+      .facts { grid-template-columns: 1fr; gap: 16px; }
+      .stats { grid-template-columns: 1fr; gap: 12px; }
+      .stat { padding: 24px 32px; }
+      .stat__value { font-size: 40px; }
+      .stat__label { font-size: 16px; }
+      .hypotheses h3 { font-size: 20px; }
+      .hypotheses p { font-size: 16px; }
+      .grid-2 { grid-template-columns: 1fr; gap: 16px; }
+      .decision { padding: 24px; }
+      .decision h3 { font-size: 20px; }
+      .compare { border-radius: 16px; }
+      .compare .phone { --pw: 200px; }
+      .compare figcaption { font-size: 14px; }
+      .bignums { grid-template-columns: 1fr; gap: 32px; }
+      .bignum dd { font-size: 72px; }
+      .bignum dt { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Ícones da barra de status dos celulares: sinal, Wi-Fi e bateria -->
+  <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+    <symbol id="status-icons" viewBox="0 0 66 12" fill="currentColor">
+      <rect x="0" y="7.5" width="3" height="4" rx=".8"/>
+      <rect x="4.5" y="5.5" width="3" height="6" rx=".8"/>
+      <rect x="9" y="3" width="3" height="8.5" rx=".8"/>
+      <rect x="13.5" y=".5" width="3" height="11" rx=".8"/>
+      <path d="M29 11.6l-2.4-2.8a3.6 3.6 0 0 1 4.8 0z"/>
+      <path d="M24.9 6.4a6.3 6.3 0 0 1 8.2 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M22.2 3.4a10.4 10.4 0 0 1 13.6 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <rect x="41.5" y=".9" width="21" height="10.2" rx="3" fill="none" stroke="currentColor" stroke-opacity=".45"/>
+      <rect x="43.4" y="2.8" width="17.2" height="6.4" rx="1.6"/>
+      <rect x="63.8" y="4" width="1.6" height="4" rx=".8" fill-opacity=".45"/>
+    </symbol>
+  </svg>
+
+  <div class="site-header">
+    <header class="container header">
+      <a href="index.html" class="header__logo" aria-label="Início">
+        <img src="assets/logo.png" alt="Logo Victor Brito" width="40" height="40">
+      </a>
+      <nav class="nav">
+        <a href="index.html#sobre" class="nav__link">Sobre mim</a>
+        <a href="index.html#contato" class="btn">Contato</a>
+      </nav>
+    </header>
+  </div>
+
+  <main>
+    <section class="hero">
+      <div class="container stack">
+        <figure class="hero__media">
+          <img src="assets/formalizar/hero-mockup.jpg" alt="Nova LP Formalizar aberta em um celular e em um notebook sobre uma mesa" width="2400" height="964">
+        </figure>
+
+        <a href="index.html#projetos" class="back-link">← Voltar para projetos</a>
+
+        <div class="intro">
+          <span class="tag">UX/UI Design</span>
+          <h1 class="intro__title">LP Formalizar</h1>
+          <p class="intro__text">Redesign mobile first da landing page de formalização da Contabilizei, guiado por heatmaps, gravações de sessão e análise heurística.</p>
+        </div>
+
+        <dl class="facts">
+          <div><dt>Cliente</dt><dd>Contabilizei</dd></div>
+          <div><dt>Tipo</dt><dd>Redesign de landing page</dd></div>
+          <div><dt>Foco</dt><dd>Mobile first: 97% dos acessos</dd></div>
+          <div><dt>Entregas</dt><dd>Pesquisa, heatmaps, layout, protótipo e apresentação</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="problema-titulo">
+      <div class="container stack">
+        <div class="about">
+          <div>
+            <p class="eyebrow">O PROBLEMA</p>
+            <h2 class="about__title" id="problema-titulo">Uma LP que funcionava, mas podia converter mais</h2>
+          </div>
+          <div class="about__text">
+            <p>A LP Formalizar já estava no ar havia alguns meses e tinha bom desempenho. Mesmo assim, era o momento de um redesign de copy e de layout, para comparar os resultados com a versão atual junto de novos criativos de campanha.</p>
+            <p>Os dados mostravam onde a página travava: 97% dos acessos vinham do celular, mas a experiência não era mobile first. E só 3,17% das pessoas rolavam até o formulário, que é onde a conversão acontece.</p>
+            <p>Havia ainda um requisito novo: uma hero dinâmica, com uma copy para quem quer descobrir se pode ser MEI e outra para quem precisa emitir nota fiscal.</p>
+          </div>
+        </div>
+        <dl class="stats">
+          <div class="stat card">
+            <dt class="stat__label" style="order: 2">dos acessos vinham do celular</dt>
+            <dd class="stat__value" style="order: 1">97%</dd>
+          </div>
+          <div class="stat card">
+            <dt class="stat__label" style="order: 2">rolavam até o formulário</dt>
+            <dd class="stat__value" style="order: 1">3,17%</dd>
+          </div>
+          <div class="stat card">
+            <dt class="stat__label" style="order: 2">versões de hero: MEI e nota fiscal</dt>
+            <dd class="stat__value" style="order: 1">2</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="diagnostico-titulo">
+      <div class="container stack">
+        <div class="section__header">
+          <p class="eyebrow">DIAGNÓSTICO</p>
+          <h2 class="section__title" id="diagnostico-titulo">O que os dados mostraram</h2>
+          <p class="section__text">Gravações de sessão e mapas de calor do Microsoft Clarity, somados a uma análise heurística e a uma matriz de objeções, levantaram cinco hipóteses.</p>
+        </div>
+        <div class="heatmaps card">
+          <figure>
+            <img src="assets/formalizar/heatmap-cliques-v1.png" alt="Mapa de cliques da hero atual, com cliques concentrados na foto da contadora" loading="lazy" width="340" height="640">
+            <figcaption>Cliques na hero atual</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/formalizar/heatmap-cliques-v2.png" alt="Mapa de cliques da variação da hero, com cliques na foto e na legenda" loading="lazy" width="334" height="636">
+            <figcaption>Cliques na variação</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/formalizar/heatmap-rolagem.jpg" alt="Mapa de rolagem da LP: a atenção cai do vermelho no topo para o azul antes do formulário" loading="lazy" width="385" height="3983">
+            <figcaption>Rolagem</figcaption>
+          </figure>
+        </div>
+        <ol class="hypotheses">
+          <li><h3>Não era mobile first</h3><p>97% das pessoas acessavam pelo celular, mas o layout tinha sido pensado para telas grandes.</p></li>
+          <li><h3>A foto chamava mais atenção que o CTA</h3><p>A foto da Thayna concentrava muitos dead clicks e rage clicks, mais que o texto e o botão.</p></li>
+          <li><h3>A legenda parecia um botão</h3><p>Pelo princípio da affordance, o caption tinha cara de elemento clicável e também recebia dead e rage clicks.</p></li>
+          <li><h3>As animações atrapalhavam</h3><p>Além de travar, mesmo funcionando como previsto elas cobriam parte do conteúdo, inclusive os CTAs para o formulário.</p></li>
+          <li><h3>O formulário estava longe demais</h3><p>Só 3,17% das pessoas rolavam até a seção do formulário.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="ergonomia-titulo">
+      <div class="container stack">
+        <div class="section__header">
+          <p class="eyebrow">MOBILE FIRST</p>
+          <h2 class="section__title" id="ergonomia-titulo">Pensado para o polegar</h2>
+          <p class="section__text">Usei o material da Nielsen Norman Group sobre como as pessoas seguram o celular (só a mão esquerda, as duas mãos ou só a direita). Também defini um viewport de 550 px, para que a primeira dobra apareça inteira para a maior parte dos usuários.</p>
+        </div>
+        <figure class="media">
+          <img src="assets/formalizar/ergonomia-nng.png" alt="Áreas de alcance do polegar no celular usando a mão esquerda, as duas mãos e a mão direita" loading="lazy" width="1600" height="860">
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="decisoes-titulo">
+      <div class="container stack">
+        <div class="section__header">
+          <p class="eyebrow">DECISÕES</p>
+          <h2 class="section__title" id="decisoes-titulo">Do diagnóstico ao layout</h2>
+        </div>
+        <div class="grid-2">
+          <article class="decision card">
+            <h3>Componentes da Home SP</h3>
+            <p>A página da Home SP serviu de referência. Reaproveitar os componentes dela garantiu consistência, agilizou a entrega e aumentou a chance de bom desempenho.</p>
+          </article>
+          <article class="decision card">
+            <h3>Mais respiro entre as seções</h3>
+            <p>As páginas atuais pareciam espremidas. Usei o PicPay como referência de espaçamento e de bom uso de white space.</p>
+          </article>
+          <article class="decision card">
+            <h3>Continuidade entre os blocos</h3>
+            <p>Mais fluidez entre os elementos da página, seguindo o princípio da continuidade da Gestalt.</p>
+          </article>
+          <article class="decision card">
+            <h3>Performance em primeiro lugar</h3>
+            <p>Para garantir um bom LCP, a foto da Thayna ficou menor, o que também reduz a atenção que ela roubava do CTA. As imagens deixaram de ser superdimensionadas.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="solucao-titulo">
+      <div class="container stack">
+        <div class="section__header">
+          <p class="eyebrow">SOLUÇÃO</p>
+          <h2 class="section__title" id="solucao-titulo">A nova LP</h2>
+          <p class="section__text">Mobile first, com o formulário mais perto do topo e uma hero dinâmica: uma copy para quem quer descobrir se pode ser MEI e outra para quem precisa emitir nota fiscal.</p>
+        </div>
+        <div class="tilt" role="img" aria-label="Telas da LP Formalizar, antes e depois do redesign, rolando em celulares inclinados">
+          <div class="tilt__row">
+            <div class="phone">
+              <div class="phone__screen">
+                <div class="status"><span>9:41</span><svg aria-hidden="true"><use href="#status-icons"/></svg></div>
+                <div class="phone__viewport"><img src="assets/formalizar/lp-nota-fiscal.jpg" alt="" loading="lazy" width="375" height="4283" style="--scroll-delay: -12s"></div>
+              </div>
+            </div>
+            <div class="phone">
+              <div class="phone__screen">
+                <div class="status status--blue"><span>9:41</span><svg aria-hidden="true"><use href="#status-icons"/></svg></div>
+                <div class="phone__viewport"><img src="assets/formalizar/lp-antes.jpg" alt="" loading="lazy" width="375" height="4677" style="--scroll-delay: -2s"></div>
+              </div>
+            </div>
+            <div class="phone">
+              <div class="phone__screen">
+                <div class="status"><span>9:41</span><svg aria-hidden="true"><use href="#status-icons"/></svg></div>
+                <div class="phone__viewport"><img src="assets/formalizar/lp-mei.jpg" alt="" loading="lazy" width="375" height="4365"></div>
+              </div>
+            </div>
+            <div class="phone">
+              <div class="phone__screen">
+                <div class="status"><span>9:41</span><svg aria-hidden="true"><use href="#status-icons"/></svg></div>
+                <div class="phone__viewport"><img src="assets/formalizar/lp-nota-fiscal.jpg" alt="" loading="lazy" width="375" height="4283" style="--scroll-delay: -6s"></div>
+              </div>
+            </div>
+            <div class="phone">
+              <div class="phone__screen">
+                <div class="status"><span>9:41</span><svg aria-hidden="true"><use href="#status-icons"/></svg></div>
+                <div class="phone__viewport"><img src="assets/formalizar/lp-mei.jpg" alt="" loading="lazy" width="375" height="4365" style="--scroll-delay: -20s"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="compare">
+          <figure>
+            <div class="phone">
+              <div class="phone__screen">
+                <div class="status status--blue"><span>9:41</span><svg aria-hidden="true"><use href="#status-icons"/></svg></div>
+                <div class="phone__viewport"><img src="assets/formalizar/lp-antes.jpg" alt="LP Formalizar antes do redesign, rolando do topo ao rodapé" loading="lazy" width="375" height="4677"></div>
+              </div>
+            </div>
+            <figcaption>Antes</figcaption>
+          </figure>
+          <figure>
+            <div class="phone">
+              <div class="phone__screen">
+                <div class="status"><span>9:41</span><svg aria-hidden="true"><use href="#status-icons"/></svg></div>
+                <div class="phone__viewport"><img src="assets/formalizar/lp-mei.jpg" alt="Nova LP com a hero para MEI, rolando do topo ao rodapé" loading="lazy" width="375" height="4365"></div>
+              </div>
+            </div>
+            <figcaption>Depois · hero MEI</figcaption>
+          </figure>
+          <figure>
+            <div class="phone">
+              <div class="phone__screen">
+                <div class="status"><span>9:41</span><svg aria-hidden="true"><use href="#status-icons"/></svg></div>
+                <div class="phone__viewport"><img src="assets/formalizar/lp-nota-fiscal.jpg" alt="Nova LP com a hero para nota fiscal, rolando do topo ao rodapé" loading="lazy" width="375" height="4283"></div>
+              </div>
+            </div>
+            <figcaption>Depois · hero nota fiscal</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="resultados-titulo">
+      <div class="container stack">
+        <div class="section__header">
+          <p class="eyebrow">RESULTADOS</p>
+          <h2 class="section__title" id="resultados-titulo">O que mudou</h2>
+          <p class="section__text">A métrica principal é a conversão de usuário em contato pelo formulário. A ideia é comparar a nova LP com a atual, junto dos novos criativos de campanha.</p>
+        </div>
+        <!-- Big numbers: trocar os +00% pelos resultados reais -->
+        <dl class="bignums">
+          <div class="bignum">
+            <dt>SQL</dt>
+            <dd>+00%</dd>
+          </div>
+          <div class="bignum">
+            <dt>New users → venda</dt>
+            <dd>+00%</dd>
+          </div>
+          <div class="bignum">
+            <dt>Venda</dt>
+            <dd>+00%</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section cta" aria-labelledby="cta-titulo">
+      <div class="container">
+        <div class="section__header">
+          <h2 class="section__title" id="cta-titulo">Gostou do projeto?</h2>
+          <p class="section__text">Veja outros trabalhos ou vamos conversar sobre o seu.</p>
+        </div>
+        <div class="cta__actions">
+          <a href="index.html#projetos" class="btn">Ver outros projetos</a>
+          <a href="index.html#contato" class="btn btn--outline">Contato</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <img src="assets/logo.png" alt="Logo Victor Brito" width="40" height="40">
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const header = document.querySelector('.site-header');
+      const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+  </script>
+</body>
+</html>
