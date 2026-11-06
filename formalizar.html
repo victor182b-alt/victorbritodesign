@@ -368,6 +368,11 @@
       .bignum dd { font-size: 72px; }
       .bignum dt { font-size: 16px; }
     }
+    /* mobile: botões empilhados, na largura toda */
+    @media (max-width: 600px) {
+      .cta__actions { flex-direction: column; }
+      .cta__actions .btn { width: 100%; }
+    }
   </style>
 </head>
 <body>
