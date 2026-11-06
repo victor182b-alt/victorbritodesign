@@ -66,12 +66,6 @@
       background: var(--color-bg);
       padding: 12px 0;
     }
-    .site-header.is-scrolled {
-      background: rgba(4, 5, 5, .72);
-      -webkit-backdrop-filter: blur(12px);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 1px 0 var(--color-border);
-    }
     .header { display: flex; align-items: center; justify-content: space-between; }
     .header__logo img { width: 40px; height: 40px; }
     .nav { display: flex; align-items: center; gap: 24px; font-size: 14px; }
@@ -374,6 +368,7 @@
       .cta__actions .btn { width: 100%; }
     }
   </style>
+  <link rel="stylesheet" href="assets/liquid-glass.css">
 </head>
 <body>
   <!-- Ícones da barra de status dos celulares: sinal, Wi-Fi e bateria -->
@@ -656,5 +651,6 @@
       window.addEventListener('scroll', onScroll, { passive: true });
     })();
   </script>
+  <script src="assets/liquid-glass.js"></script>
 </body>
 </html>

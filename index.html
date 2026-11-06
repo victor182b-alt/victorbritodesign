@@ -70,12 +70,6 @@
       padding: 12px 0;
       transition: background-color .3s ease, box-shadow .3s ease;
     }
-    .site-header.is-scrolled {
-      background: rgba(4, 5, 5, .72);
-      -webkit-backdrop-filter: blur(12px);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 1px 0 var(--color-border);
-    }
     .header__logo img { transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
     .header__logo:hover img { transform: rotate(-12deg) scale(1.08); }
     .header {
@@ -536,6 +530,7 @@
       .hero__actions .btn { width: 100%; }
     }
   </style>
+  <link rel="stylesheet" href="assets/liquid-glass.css">
 </head>
 <body>
   <div class="site-header">
@@ -620,7 +615,7 @@
               <div class="project-card__media project-card__media--omaha" aria-hidden="true">
                 <img src="assets/11-11-25-1080X1350-ESTAT-BLACK-NOVEMBER-ARG6-ECONOMIZE-900-REAIS-ALLTYPE-FUNDO-PRETO.png" alt="">
               </div>
-              <span class="project-card__tag">Visual Design - Marketing de performance</span>
+              <span class="project-card__tag">Visual Design - Criativos de Ads</span>
               <h3 class="project-card__title">Omaha</h3>
               <p class="project-card__text">Objetivo de aumento de Market Share em cidades com potencial de crescimento através da sazonalidade da Black Friday.</p>
               <span class="project-card__link">Ver projeto <img src="assets/icon-arrow-right.svg" alt="" width="16" height="16"></span>
@@ -902,5 +897,6 @@ Sua colaboração eficaz e compromisso com a excelência em suas entregas de pro
       counters.forEach(el => counterObserver.observe(el));
     })();
   </script>
+  <script src="assets/liquid-glass.js"></script>
 </body>
 </html>
