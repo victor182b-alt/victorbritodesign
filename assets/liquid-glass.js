@@ -57,8 +57,9 @@
       const w = Math.round(glass.offsetWidth);
       const h = Math.round(glass.offsetHeight);
       if (!w || !h) return;
-      const r = h / 2;
-      const bezel = Math.min(r, 20);          // largura da borda que refrata
+      /* cápsula no desktop, barra reta no mobile: o raio vem do CSS */
+      const r = Math.min(parseFloat(getComputedStyle(glass).borderTopLeftRadius) || 0, h / 2);
+      const bezel = r ? Math.min(r, 20) : 14; // largura da borda que refrata
       const strength = Math.min(40, h * .7);  // deslocamento máximo (px)
 
       canvas.width = w;
@@ -123,7 +124,9 @@
     speed *= .72;
     value += speed;
     target *= .85;
-    glass.style.scale = `${1 + value * .6} ${1 - value}`;
+    /* a barra de ponta a ponta (mobile) só estica na vertical */
+    const sx = glass.offsetWidth >= window.innerWidth - 1 ? 1 : 1 + value * .6;
+    glass.style.scale = `${sx} ${1 - value}`;
     if (Math.abs(value) > .0005 || Math.abs(target) > .0005) {
       requestAnimationFrame(tick);
     } else {

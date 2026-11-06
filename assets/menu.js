@@ -15,7 +15,7 @@
     close: svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'),
   };
 
-  const ABOUT = { id: 'sobre', icon: 'user', title: 'Sobre mim', desc: 'Trajetória e experiência', href: 'index.html#sobre' };
+  const ABOUT = { id: 'sobre', icon: 'user', title: 'Sobre mim', desc: 'Trajetória e experiência', href: 'sobre.html' };
   const LINKS = [
     { id: 'whatsapp', icon: 'whatsapp', title: 'WhatsApp', desc: 'Vamos falar do seu projeto', href: 'https://api.whatsapp.com/send/?phone=5511976625372&text&type=phone_number&app_absent=0' },
     { id: 'linkedin', icon: 'linkedin', title: 'LinkedIn', desc: 'in/victor-brito-designer', href: 'https://www.linkedin.com/in/victor-brito-designer/' },
