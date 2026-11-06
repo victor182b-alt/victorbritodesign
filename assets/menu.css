@@ -1,0 +1,143 @@
+/*
+  Menu mobile (hambúrguer) e cards de link.
+  Os cards (.mcard) também são usados na página Sobre mim.
+*/
+
+/* ---------- Cards de link ---------- */
+.mcards { display: flex; flex-direction: column; gap: 12px; }
+.mcard {
+  --tint: 74, 77, 255;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: linear-gradient(180deg, #1a1a1a, #121212);
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 16px;
+  transition: transform .3s cubic-bezier(.2, .7, .2, 1), border-color .25s ease, background-color .25s ease;
+}
+.mcard--whatsapp { --tint: 37, 211, 102; }
+.mcard--linkedin { --tint: 59, 142, 234; }
+.mcard--instagram { --tint: 225, 48, 108; }
+.mcard:hover { transform: translateY(-2px); border-color: rgba(var(--tint), .45); }
+.mcard:active { transform: scale(.98); }
+.mcard__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: rgb(var(--tint));
+  background: rgba(var(--tint), .14);
+  border: 1px solid rgba(var(--tint), .3);
+}
+.mcard__icon svg { width: 22px; height: 22px; }
+.mcard__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.mcard__title { font-size: 16px; font-weight: 700; }
+.mcard__desc { font-size: 14px; color: rgba(255, 255, 255, .6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mcard__cta {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .1);
+  transition: background-color .25s ease, transform .3s cubic-bezier(.2, .7, .2, 1);
+}
+.mcard__cta svg { width: 16px; height: 16px; }
+.mcard:hover .mcard__cta { background: rgba(var(--tint), .9); transform: rotate(45deg); }
+.mcards__label { margin: 0 0 -4px; font-size: 12px; font-weight: 700; color: rgba(255, 255, 255, .5); }
+
+/* ---------- Botão do menu ---------- */
+.menu-btn {
+  display: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: #fff;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color .2s ease, transform .2s ease;
+}
+.menu-btn:hover { background: rgba(255, 255, 255, .12); }
+.menu-btn:active { transform: scale(.94); }
+.menu-btn svg { width: 20px; height: 20px; }
+
+@media (max-width: 600px) {
+  .nav { display: none; }
+  .menu-btn { display: grid; }
+}
+
+/* ---------- Painel do menu ---------- */
+.mmenu {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 12px 20px 32px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #0a0a0a;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, visibility 0s linear .3s;
+}
+.mmenu.is-open { opacity: 1; visibility: visible; transition: opacity .3s ease; }
+.mmenu__head { display: flex; align-items: center; justify-content: space-between; }
+.mmenu__head img { width: 40px; height: 40px; }
+.mmenu__profile { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+.mmenu__photo {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, .12);
+}
+.mmenu__name { margin: 0; font-size: 32px; font-weight: 900; line-height: 1.2; }
+.mmenu__role { margin: 4px 0 0; font-size: 16px; color: rgba(255, 255, 255, .75); }
+.mmenu__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 10px;
+  background: rgba(45, 44, 45, .32);
+  border: .5px solid rgba(255, 255, 255, .35);
+  border-radius: 360px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.mmenu__status::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #25d366;
+  box-shadow: 0 0 6px rgba(37, 211, 102, .6);
+  animation: mmenuPulse 2s ease-in-out infinite;
+}
+@keyframes mmenuPulse { 50% { box-shadow: 0 0 0 4px rgba(37, 211, 102, .15); } }
+
+/* entrada em cascata dos blocos */
+.mmenu > * { opacity: 0; transform: translateY(16px); }
+.mmenu.is-open > * {
+  opacity: 1;
+  transform: none;
+  transition: opacity .45s ease, transform .55s cubic-bezier(.2, .7, .2, 1);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.mmenu > .mmenu__head { opacity: 1; transform: none; }
+
+/* sem animação de movimento, só fade (o Windows do usuário reduz movimento) */
+@media (prefers-reduced-motion: reduce) {
+  .mmenu > * { transform: none; }
+}
+
+body.menu-open { overflow: hidden; }
