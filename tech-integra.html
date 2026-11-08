@@ -166,9 +166,6 @@
     .cta__actions .btn { padding: 12px 16px; font-size: 18px; }
 
     /* Footer */
-    .site-footer { background: var(--color-bg); padding: 12px 0; }
-    .site-footer .container { display: flex; justify-content: center; }
-    .site-footer img { width: 40px; height: 40px; }
 
     /* Animações de entrada (mesmas do index) */
     @keyframes fadeInUp {
@@ -208,13 +205,13 @@
       :root { --gutter: 20px; }
       .section { padding: 40px 0; }
       .stack { gap: 32px; }
-      .hero { padding-top: 40px; }
+      .hero { padding-top: 32px; }
       .hero .stack { gap: 32px; }
       .intro__title { font-size: 40px; }
       .intro__text { font-size: 18px; }
       .section__title, .about__title { font-size: 28px; }
       .section__text, .about__text p { font-size: 16px; }
-      .brindes { gap: 48px; }
+      .brindes { gap: 32px; }
       .sub__title { font-size: 20px; }
       .grid-2 { grid-template-columns: 1fr; gap: 16px; }
       .media--photo { aspect-ratio: 350 / 240; }
@@ -241,6 +238,7 @@
   </style>
   <link rel="stylesheet" href="assets/liquid-glass.css">
   <link rel="stylesheet" href="assets/menu.css">
+  <link rel="stylesheet" href="assets/footer.css">
 </head>
 <body>
   <div class="site-header">
@@ -399,7 +397,28 @@
 
   <footer class="site-footer">
     <div class="container">
-      <img src="assets/logo.png" alt="Logo Victor Brito" width="40" height="40">
+      <div class="footer__main">
+        <a href="index.html" class="footer__brand" aria-label="Victor Brito, início">
+          <img src="assets/logo.png" alt="" width="40" height="40">
+          <span><span class="footer__name">Victor Brito</span><span class="footer__role">Product, UX e Visual Designer</span></span>
+        </a>
+        <nav class="footer__nav" aria-label="Rodapé">
+          <a href="index.html#projetos">Projetos</a>
+          <a href="sobre.html">Sobre mim</a>
+          <a href="links.html">Links</a>
+        </nav>
+        <div class="footer__social">
+          <a href="https://www.linkedin.com/in/victor-brito-designer/" target="_blank" rel="noopener"><img src="assets/icon-linkedin.svg" alt="LinkedIn" width="32" height="32"></a>
+          <a href="https://api.whatsapp.com/send/?phone=5511976625372&amp;text&amp;type=phone_number&amp;app_absent=0" target="_blank" rel="noopener"><img src="assets/icon-whatsapp.svg" alt="WhatsApp" width="32" height="32"></a>
+          <a href="mailto:victor182b@gmail.com?subject=Contato%20pelo%20portf%C3%B3lio"><img src="assets/icon-email.svg" alt="Email" width="32" height="32"></a>
+          <a href="https://www.instagram.com/victorbritodesign" target="_blank" rel="noopener"><img src="assets/icon-instagram.svg" alt="Instagram" width="32" height="32"></a>
+        </div>
+      </div>
+      <div class="footer__divider"></div>
+      <div class="footer__bottom">
+        <p class="footer__copy">© 2026 Victor Brito</p>
+        <a href="#" class="footer__top"><span class="footer__top-label">Voltar ao topo</span><span class="footer__top-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></a>
+      </div>
     </div>
   </footer>
 

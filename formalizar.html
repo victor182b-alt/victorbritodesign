@@ -475,9 +475,6 @@
     .cta__actions .btn { padding: 12px 16px; font-size: 18px; }
 
     /* Footer */
-    .site-footer { background: var(--color-bg); padding: 12px 0; }
-    .site-footer .container { display: flex; justify-content: center; }
-    .site-footer img { width: 40px; height: 40px; }
 
     @media (max-width: 900px) {
       .about { grid-template-columns: 1fr; gap: 24px; }
@@ -580,6 +577,8 @@
       .hero { padding-bottom: 40px; }
       .intro__title { font-size: 32px; }
       .intro__text { font-size: 16px; }
+      .facts { flex-wrap: nowrap; gap: 16px; }
+      .facts > div { flex: 1 1 0; min-width: 0; }
       .section__title, .about__title { font-size: 24px; }
       .hypotheses h3, .decision h3 { font-size: 18px; }
       .bignum dd { font-size: 40px; }
@@ -588,6 +587,7 @@
   </style>
   <link rel="stylesheet" href="assets/liquid-glass.css">
   <link rel="stylesheet" href="assets/menu.css">
+  <link rel="stylesheet" href="assets/footer.css">
 </head>
 <body>
   <!-- Ícones da barra de status dos celulares: sinal, Wi-Fi e bateria -->
@@ -630,8 +630,8 @@
 
         <div class="intro">
           <span class="tag">UX/UI Design</span>
-          <h1 class="intro__title">Landing Page Formalizar</h1>
-          <p class="intro__text">Redesign da landing page de formalização da Contabilizei, guiado por heatmaps, gravações de sessão e análise heurística.</p>
+          <h1 class="intro__title">Redesign da landing page de formalização</h1>
+          <p class="intro__text">O objetivo é capturar leads para o serviço de assessoria contábil da Contabilizei, com foco em profissionais autônomos.</p>
         </div>
 
         <dl class="facts">
@@ -642,24 +642,12 @@
       </div>
     </section>
 
-    <section class="section" aria-labelledby="contexto-titulo">
-      <div class="container">
-        <div class="about">
-          <h2 class="about__title" id="contexto-titulo">Contexto</h2>
-          <div class="about__text">
-            <p>Essa landing page tem por objetivo capturar leads para o serviço de assessoria contábil da Contabilizei, o foco maior são de profissionais autônomos com base na pesquisa do time de negócios.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="section" aria-labelledby="problema-titulo">
       <div class="container">
         <div class="about">
           <h2 class="about__title" id="problema-titulo">Uma Landing Page que podia converter mais</h2>
           <div class="about__text">
-            <p>A LP Formalizar já estava no ar havia alguns meses e tinha bom desempenho. Mesmo assim, era o momento de um redesign de copy e de layout, para comparar os resultados com a versão atual junto de novos criativos de campanha.</p>
-            <p>Os dados mostravam onde a página travava: 97% dos acessos vinham do celular, mas a experiência não era mobile first. E só 3,17% das pessoas rolavam até o formulário, que é onde a conversão acontece.</p>
+            <p>A LP Formalizar já estava no ar havia alguns meses e, com base no time de negócios, era preciso um redesign de copy e de layout.</p>
           </div>
         </div>
       </div>
@@ -953,7 +941,7 @@
       <div class="container stack">
         <div class="section__header">
           <h2 class="section__title" id="resultados-titulo">Resultados</h2>
-          <p class="section__text">A métrica principal é a conversão de usuário em contato pelo formulário. A ideia é comparar a nova LP com a atual, junto dos novos criativos de campanha.</p>
+          <p class="section__text">A principal métrica de sucesso é a conversão de usuário em contato pelo formulário.</p>
         </div>
         <dl class="bignums">
           <div class="bignum"><dt>New user</dt><dd aria-label="+150%"><small aria-hidden="true">+</small><span data-count="150" aria-hidden="true">150</span><small aria-hidden="true">%</small></dd></div>
@@ -980,7 +968,28 @@
 
   <footer class="site-footer">
     <div class="container">
-      <img src="assets/logo.png" alt="Logo Victor Brito" width="40" height="40">
+      <div class="footer__main">
+        <a href="index.html" class="footer__brand" aria-label="Victor Brito, início">
+          <img src="assets/logo.png" alt="" width="40" height="40">
+          <span><span class="footer__name">Victor Brito</span><span class="footer__role">Product, UX e Visual Designer</span></span>
+        </a>
+        <nav class="footer__nav" aria-label="Rodapé">
+          <a href="index.html#projetos">Projetos</a>
+          <a href="sobre.html">Sobre mim</a>
+          <a href="links.html">Links</a>
+        </nav>
+        <div class="footer__social">
+          <a href="https://www.linkedin.com/in/victor-brito-designer/" target="_blank" rel="noopener"><img src="assets/icon-linkedin.svg" alt="LinkedIn" width="32" height="32"></a>
+          <a href="https://api.whatsapp.com/send/?phone=5511976625372&amp;text&amp;type=phone_number&amp;app_absent=0" target="_blank" rel="noopener"><img src="assets/icon-whatsapp.svg" alt="WhatsApp" width="32" height="32"></a>
+          <a href="mailto:victor182b@gmail.com?subject=Contato%20pelo%20portf%C3%B3lio"><img src="assets/icon-email.svg" alt="Email" width="32" height="32"></a>
+          <a href="https://www.instagram.com/victorbritodesign" target="_blank" rel="noopener"><img src="assets/icon-instagram.svg" alt="Instagram" width="32" height="32"></a>
+        </div>
+      </div>
+      <div class="footer__divider"></div>
+      <div class="footer__bottom">
+        <p class="footer__copy">© 2026 Victor Brito</p>
+        <a href="#" class="footer__top"><span class="footer__top-label">Voltar ao topo</span><span class="footer__top-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></a>
+      </div>
     </div>
   </footer>
 
