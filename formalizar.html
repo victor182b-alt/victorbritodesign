@@ -435,6 +435,45 @@
     .heuristic__field b { display: none; }
     .heuristic--na .heuristic__row { color: rgba(255, 255, 255, .4); }
     .heuristic--na .heuristic__name { color: rgba(255, 255, 255, .55); }
+    /* tooltip "o que é análise heurística": abre no hover, no foco do teclado e no toque */
+    .tip { position: relative; display: inline-flex; margin-left: 12px; vertical-align: middle; }
+    .tip__btn {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      color: rgba(255, 255, 255, .7);
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 50%;
+      cursor: help;
+      transition: color .2s ease, background-color .2s ease, border-color .2s ease;
+    }
+    .tip__btn svg { width: 16px; height: 16px; }
+    .tip__btn:hover, .tip.is-open .tip__btn, .tip__btn:focus-visible { color: #fff; background: rgba(5, 9, 255, .35); border-color: rgba(5, 9, 255, .8); outline: none; }
+    .tip__bubble {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      z-index: 5;
+      width: 320px;
+      padding: 14px 16px;
+      background: #15171e;
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 12px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .5);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, .88);
+      opacity: 0;
+      visibility: hidden;
+      transform: translate(-50%, -4px);
+      transition: opacity .2s ease, transform .2s ease, visibility .2s;
+    }
+    .tip:hover .tip__bubble, .tip.is-open .tip__bubble, .tip__btn:focus-visible + .tip__bubble { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+
     /* severidade na escala de Nielsen (0 a 4) */
     .severity { display: inline-flex; align-items: center; gap: 8px; align-self: start; font-size: 13px; font-weight: 700; color: var(--color-text); white-space: nowrap; }
     .severity__bars { display: flex; gap: 3px; }
@@ -506,6 +545,7 @@
       .heuristic.is-open .heuristic__body { grid-template-rows: 1fr; }
       .heuristic__inner { display: flex; flex-direction: column; gap: 14px; min-height: 0; overflow: hidden; }
       .heuristic.is-open .heuristic__inner { padding-bottom: 20px; }
+      .heuristic__field { color: rgba(255, 255, 255, .9); }
       .heuristic__field b { display: block; margin-bottom: 4px; font-size: 12px; letter-spacing: .02em; text-transform: uppercase; color: rgba(255, 255, 255, .45); }
     }
 
@@ -574,6 +614,11 @@
     }
     /* Tipografia mobile um degrau menor; o corpo de texto segue em 16px */
     @media (max-width: 600px) {
+      .section__header:has(.tip) { position: relative; }
+      .tip { position: static; margin-left: 8px; }
+      .tip__btn { width: 24px; height: 24px; }
+      .tip__bubble { top: 40px; left: 0; width: 100%; transform: translateY(-4px); }
+      .tip:hover .tip__bubble, .tip.is-open .tip__bubble, .tip__btn:focus-visible + .tip__bubble { transform: none; }
       .hero { padding-bottom: 40px; }
       .intro__title { font-size: 32px; }
       .intro__text { font-size: 16px; }
@@ -686,7 +731,12 @@
     <section class="section" aria-labelledby="heuristica-titulo">
       <div class="container stack">
         <div class="section__header">
-          <h2 class="section__title" id="heuristica-titulo">Análise heurística</h2>
+          <h2 class="section__title" id="heuristica-titulo">Análise heurística<span class="tip">
+            <button type="button" class="tip__btn" aria-label="O que é uma análise heurística?" aria-describedby="tip-heuristica" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+            </button>
+            <span class="tip__bubble" role="tooltip" id="tip-heuristica">Avaliação de usabilidade em que um especialista revisa a interface com base em princípios consagrados, aqui as 10 heurísticas de Jakob Nielsen, para encontrar problemas antes mesmo de testar com usuários.</span>
+          </span></h2>
           <p class="section__text">Avaliei a LP antiga com as 10 heurísticas de Nielsen. Oito se aplicavam, e cinco problemas tiveram severidade alta na escala de 0 a 4.</p>
         </div>
         <div class="heuristics-table">
@@ -1009,6 +1059,15 @@
           const open = item.classList.toggle('is-open');
           btn.setAttribute('aria-expanded', String(open));
         });
+      });
+
+      /* Tooltip: no toque abre e fecha; fecha com Esc ou tocando fora */
+      document.querySelectorAll('.tip').forEach(tip => {
+        const btn = tip.querySelector('.tip__btn');
+        const set = open => { tip.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', String(open)); };
+        btn.addEventListener('click', e => { e.stopPropagation(); set(!tip.classList.contains('is-open')); });
+        document.addEventListener('click', e => { if (!tip.contains(e.target)) set(false); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
       });
 
       /* Big numbers dos resultados: contam do zero quando aparecem na tela */

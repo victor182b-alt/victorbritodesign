@@ -36,11 +36,11 @@
       <span class="mcard__cta">${ICONS.arrow}</span>
     </a>`;
   };
-  const group = (label, items) => `<div class="mcards"><p class="mcards__label">${label}</p>${items.map(card).join('')}</div>`;
+  const group = (label, items) => `<div class="mcards">${label ? `<p class="mcards__label">${label}</p>` : ''}${items.map(card).join('')}</div>`;
 
-  /* cards de link soltos na página (Sobre mim e /links); data-links-set="portfolio" mostra Portfólio e Sobre mim */
-  const SETS = { links: LINKS, portfolio: [PORTFOLIO, ABOUT] };
-  document.querySelectorAll('[data-links]').forEach(el => { el.innerHTML = group(el.dataset.links || 'Links', SETS[el.dataset.linksSet || 'links']); });
+  /* cards de link soltos na página (Sobre mim e /links); data-links-set="portfolio" mostra só o Portfólio */
+  const SETS = { links: LINKS, portfolio: [PORTFOLIO] };
+  document.querySelectorAll('[data-links]').forEach(el => { el.innerHTML = group(el.dataset.links ?? 'Links', SETS[el.dataset.linksSet || 'links']); });
 
   /* botão + painel do menu */
   const header = document.querySelector('.site-header .header');

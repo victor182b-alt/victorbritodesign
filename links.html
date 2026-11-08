@@ -114,6 +114,8 @@
     /* cards em duas colunas no desktop */
     .links .mcards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
     .links .mcards__label { grid-column: 1 / -1; margin: 0; }
+    /* o card de Portfólio fica sozinho, na largura toda */
+    .links [data-links-set="portfolio"] .mcards { grid-template-columns: 1fr; }
 
 
     /* Animações de entrada (mesmas das outras páginas) */
@@ -169,8 +171,8 @@
       <span class="profile__status" data-reveal style="--delay: .2s">Disponível para projetos</span>
     </section>
 
-    <div data-links="Links" data-reveal style="--delay: .3s"></div>
-    <div data-links="Portfólio" data-links-set="portfolio" data-reveal style="--delay: .4s"></div>
+    <div data-links="" data-links-set="portfolio" data-reveal style="--delay: .3s"></div>
+    <div data-links="Links" data-reveal style="--delay: .4s"></div>
   </main>
 
   <footer class="site-footer">
