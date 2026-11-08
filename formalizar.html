@@ -151,7 +151,7 @@
     .phone__viewport img {
       width: 100%;
       height: auto;
-      animation: lpScroll 32s ease-in-out var(--scroll-delay, 0s) infinite alternate;
+      animation: lpScroll 48s ease-in-out var(--scroll-delay, 0s) infinite alternate;
     }
     @keyframes lpScroll {
       0%, 8%    { transform: translateY(0); }
@@ -212,7 +212,24 @@
       border-radius: 24px;
     }
     .heatmaps figure { display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 0; }
-    .heatmaps img { border-radius: 12px; height: 527px; width: auto; }
+    .heatmap__crop {
+      position: relative;
+      display: block;
+      height: 527px;
+      aspect-ratio: var(--ratio);
+      overflow: hidden;
+      border-radius: 12px;
+    }
+    .heatmap__crop--thin { border-radius: 4px; }
+    /* --sx/--sy: fração visível; --tx/--ty: início do recorte (valores do Figma) */
+    .heatmap__crop img {
+      position: absolute;
+      left: calc(var(--tx, 0) / var(--sx, 1) * -100%);
+      top: calc(var(--ty, 0) / var(--sy, 1) * -100%);
+      width: calc(100% / var(--sx, 1));
+      height: calc(100% / var(--sy, 1));
+      max-width: none;
+    }
     .heatmaps figcaption { font-size: 14px; font-weight: 700; color: var(--color-text-muted); text-align: center; }
 
     .hypotheses { margin: 0; padding: 0; list-style: none; counter-reset: hip; }
@@ -286,7 +303,9 @@
       50%      { opacity: .9;  transform: scale(1); }
     }
 
-    .laptop { position: absolute; top: 8cqw; left: 5cqw; width: 66cqw; }
+    /* no desktop os "slots" não existem: notebook e celular se posicionam na cena */
+    .showcase__slot { display: contents; }
+    .laptop { position: absolute; top: 8.2cqw; left: 9.2cqw; width: 65.9cqw; }
     .laptop__lid {
       padding: 1.1cqw;
       background: #0c0d11;
@@ -363,48 +382,11 @@
     }
 
     .showcase .phone {
-      --pw: 21cqw;
+      --pw: 20.9cqw;
       position: absolute;
-      right: 8cqw;
-      bottom: 4cqw;
+      right: 11cqw;
+      bottom: 4.5cqw;
       box-shadow: 0 3cqw 6cqw rgba(0, 0, 0, .6), 0 0 0 .35cqw #1d1f26;
-    }
-
-    /* selos de vidro flutuando sobre a cena */
-    .chip {
-      position: absolute;
-      display: flex;
-      align-items: center;
-      gap: .9cqw;
-      padding: .9cqw 1.3cqw .9cqw .9cqw;
-      background: rgba(20, 24, 42, .55);
-      border: 1px solid rgba(255, 255, 255, .14);
-      border-radius: 1.2cqw;
-      -webkit-backdrop-filter: blur(12px);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 1.5cqw 3cqw rgba(0, 0, 0, .35);
-      font-size: 1.2cqw;
-      line-height: 1.3;
-      animation: chipFloat 6s ease-in-out var(--d, 0s) infinite;
-    }
-    .chip strong { display: block; font-size: 1.35cqw; }
-    .chip span { color: rgba(255, 255, 255, .65); }
-    .chip__icon {
-      display: grid;
-      place-items: center;
-      flex: none;
-      width: 2.8cqw;
-      aspect-ratio: 1;
-      border-radius: .8cqw;
-      background: rgba(4, 247, 247, .14);
-      color: #04f7f7;
-    }
-    .chip__icon svg { width: 1.5cqw; height: 1.5cqw; }
-    .chip--form { top: 15cqw; right: 26cqw; }
-    .chip--faq { bottom: 7cqw; right: 27cqw; --d: -3s; }
-    @keyframes chipFloat {
-      0%, 100% { transform: translateY(0); }
-      50%      { transform: translateY(-.8cqw); }
     }
 
     /*
@@ -502,7 +484,7 @@
       .facts { grid-template-columns: repeat(2, 1fr); gap: 20px 16px; }
       .hypotheses li { grid-template-columns: 1fr; gap: 8px; }
       .heatmaps { gap: 12px; padding: 24px 16px; }
-      .heatmaps img { height: auto; width: 100%; }
+      .heatmap__crop { height: auto; width: 100%; }
       .heatmaps figure:nth-child(1), .heatmaps figure:nth-child(2) { width: 42%; }
       .heatmaps figure:nth-child(3) { width: 8%; }
       .heatmaps figcaption { font-size: 12px; }
@@ -538,18 +520,36 @@
       .hero { padding-top: 32px; }
       .hero .stack { gap: 32px; }
       .hero__media { aspect-ratio: 350 / 260; border-radius: 16px; }
-      /* cena do mockup: notebook em cima, celular maior na frente */
-      .showcase { aspect-ratio: 350 / 400; border-radius: 16px; }
-      .showcase__rings { top: 66%; left: 70%; width: 120cqw; }
-      .laptop { top: 10cqw; left: 5cqw; width: 84cqw; }
-      .showcase .phone { --pw: 38cqw; right: 6cqw; bottom: 6cqw; }
-      .chip { font-size: 2.8cqw; gap: 2cqw; padding: 2cqw 3cqw 2cqw 2cqw; border-radius: 3cqw; }
-      .chip strong { font-size: 3.1cqw; }
-      .chip span { display: none; }
-      .chip__icon { width: 6.4cqw; border-radius: 2cqw; }
-      .chip__icon svg { width: 3.6cqw; height: 3.6cqw; }
-      .chip--form { top: auto; bottom: 30cqw; right: auto; left: 5cqw; }
-      .chip--faq { bottom: 12cqw; right: auto; left: 9cqw; }
+      /*
+        Cena do mockup no mobile (Figma): dois cards, o celular sozinho e depois o notebook.
+        Cada slot vira um card com o próprio brilho, e os cqw passam a valer pela largura dele.
+      */
+      .showcase {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        aspect-ratio: auto;
+        overflow: visible;
+        background: none;
+        border: 0;
+        border-radius: 0;
+      }
+      .showcase__rings, .showcase__spark { display: none; }
+      .showcase__slot {
+        position: relative;
+        display: block;
+        overflow: hidden;
+        background:
+          radial-gradient(60% 55% at 50% 55%, rgba(5, 9, 255, .5), transparent 75%),
+          linear-gradient(180deg, #070a1a 0%, #03040a 100%);
+        border: 1px solid var(--color-border);
+        border-radius: 16px;
+        container-type: inline-size;
+      }
+      .showcase__slot--phone { aspect-ratio: 350 / 404; order: -1; }
+      .showcase__slot--laptop { aspect-ratio: 350 / 205; }
+      .showcase .phone { --pw: 50cqw; top: 5.4cqw; right: auto; bottom: auto; left: 25cqw; }
+      .laptop { top: 4.3cqw; left: 10cqw; width: 80cqw; }
       .browser__tabs, .browser__bar { height: 4.6cqw; }
       .browser__dots i { width: 1.4cqw; }
       .browser__tab, .browser__url { font-size: 1.9cqw; }
@@ -662,15 +662,15 @@
         </div>
         <div class="heatmaps card">
           <figure>
-            <img src="assets/formalizar/heatmap-cliques-v1.png" alt="Mapa de cliques da hero atual, com cliques concentrados na foto da contadora" loading="lazy" width="340" height="640">
+            <span class="heatmap__crop" style="--ratio: 280 / 527; --sx: .9688; --sy: .9687; --tx: .0156; --ty: .0157"><img src="assets/formalizar/heatmap-cliques-v1.png" alt="Mapa de cliques da hero atual, com cliques concentrados na foto da contadora" loading="lazy" width="340" height="640"></span>
             <figcaption>Cliques na hero atual</figcaption>
           </figure>
           <figure>
-            <img src="assets/formalizar/heatmap-cliques-v2.png" alt="Mapa de cliques da variação da hero, com cliques na foto e na legenda" loading="lazy" width="334" height="636">
+            <span class="heatmap__crop" style="--ratio: 280 / 533; --sx: .9301; --sy: .9318; --tx: .035; --ty: .0168"><img src="assets/formalizar/heatmap-cliques-v2.png" alt="Mapa de cliques da variação da hero, com cliques na foto e na legenda" loading="lazy" width="334" height="636"></span>
             <figcaption>Cliques na variação</figcaption>
           </figure>
           <figure>
-            <img src="assets/formalizar/heatmap-rolagem.jpg" alt="Mapa de rolagem da LP: a atenção cai do vermelho no topo para o azul antes do formulário" loading="lazy" width="385" height="3983">
+            <span class="heatmap__crop heatmap__crop--thin" style="--ratio: 51 / 527; --sx: .9295; --sy: .9284; --tx: .0353; --ty: .0031"><img src="assets/formalizar/heatmap-rolagem.jpg" alt="Mapa de rolagem da LP: a atenção cai do vermelho no topo para o azul antes do formulário" loading="lazy" width="385" height="3983"></span>
             <figcaption>Rolagem</figcaption>
           </figure>
         </div>
@@ -904,10 +904,9 @@
         </div>
         <div class="showcase" role="img" aria-label="Nova LP Formalizar aberta em um notebook e em um celular, rolando do topo ao rodapé">
           <span class="showcase__rings"></span>
-          <span class="showcase__spark" style="top: 6%; left: 46%"></span>
-          <span class="showcase__spark" style="top: 18%; left: 93%; --d: -1.2s"></span>
           <span class="showcase__spark" style="top: 84%; left: 8%; --d: -2s"></span>
           <span class="showcase__spark" style="top: 70%; left: 60%; --d: -.6s"></span>
+          <div class="showcase__slot showcase__slot--laptop">
           <div class="laptop">
             <div class="laptop__lid">
               <div class="laptop__screen">
@@ -926,19 +925,14 @@
             </div>
             <div class="laptop__base"></div>
           </div>
+          </div>
+          <div class="showcase__slot showcase__slot--phone">
           <div class="phone">
             <div class="phone__screen">
               <div class="status status--lp"><span>9:41</span><svg aria-hidden="true"><use href="#status-icons"/></svg></div>
               <div class="phone__viewport"><img src="assets/formalizar/lp-mobile.jpg" alt="" loading="lazy" width="336" height="4096"></div>
             </div>
           </div>
-          <div class="chip chip--form">
-            <span class="chip__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
-            <div><strong>Formulário na 2ª dobra</strong><span>mais perto do topo</span></div>
-          </div>
-          <div class="chip chip--faq">
-            <span class="chip__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01"/></svg></span>
-            <div><strong>FAQ para objeções</strong><span>antes do footer</span></div>
           </div>
         </div>
       </div>
@@ -951,10 +945,10 @@
           <p class="section__text">A métrica principal é a conversão de usuário em contato pelo formulário. A ideia é comparar a nova LP com a atual, junto dos novos criativos de campanha.</p>
         </div>
         <dl class="bignums">
-          <div class="bignum"><dt>New user</dt><dd><small>+</small>150<small>%</small></dd></div>
-          <div class="bignum"><dt>MQL</dt><dd><small>+</small>150<small>%</small></dd></div>
-          <div class="bignum"><dt>New users → venda</dt><dd><small>+</small>50<small>%</small></dd></div>
-          <div class="bignum"><dt>Venda</dt><dd><small>+</small>25<small>%</small></dd></div>
+          <div class="bignum"><dt>New user</dt><dd aria-label="+150%"><small aria-hidden="true">+</small><span data-count="150" aria-hidden="true">150</span><small aria-hidden="true">%</small></dd></div>
+          <div class="bignum"><dt>MQL</dt><dd aria-label="+150%"><small aria-hidden="true">+</small><span data-count="150" aria-hidden="true">150</span><small aria-hidden="true">%</small></dd></div>
+          <div class="bignum"><dt>New users → venda</dt><dd aria-label="+50%"><small aria-hidden="true">+</small><span data-count="50" aria-hidden="true">50</span><small aria-hidden="true">%</small></dd></div>
+          <div class="bignum"><dt>Venda</dt><dd aria-label="+25%"><small aria-hidden="true">+</small><span data-count="25" aria-hidden="true">25</span><small aria-hidden="true">%</small></dd></div>
         </dl>
       </div>
     </section>
@@ -996,6 +990,30 @@
           btn.setAttribute('aria-expanded', String(open));
         });
       });
+
+      /* Big numbers dos resultados: contam do zero quando aparecem na tela */
+      const DURATION = 2000;
+      const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+      const countUp = el => {
+        const target = Number(el.dataset.count);
+        const start = performance.now();
+        const tick = now => {
+          const progress = Math.min((now - start) / DURATION, 1);
+          el.textContent = Math.round(target * easeOutCubic(progress));
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+      const counters = document.querySelectorAll('[data-count]');
+      counters.forEach(el => { el.textContent = '0'; });
+      const counterObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          countUp(entry.target);
+          counterObserver.unobserve(entry.target);
+        });
+      }, { threshold: 0.6 });
+      counters.forEach(el => counterObserver.observe(el));
     })();
   </script>
   <script src="assets/menu.js"></script>
