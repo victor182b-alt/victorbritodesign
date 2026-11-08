@@ -348,7 +348,11 @@
     .project-card:hover { border-color: rgba(255, 255, 255, .2); }
     .project-card:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 4px; }
 
+    /* tag no canto superior esquerdo do card (Figma) */
     .project-card__tag {
+      position: absolute;
+      top: 24px;
+      left: 24px;
       padding: 4px 10px;
       background: rgba(45, 44, 45, .32);
       border: .5px solid rgba(255, 255, 255, .35);
@@ -528,6 +532,15 @@
       .section__title { font-size: 24px; }
       .project-card__title { font-size: 20px; }
       .timeline__name { font-size: 16px; }
+      /*
+        Enquadramento das imagens dos cards no mobile (recorte do Figma, card de 350x440).
+        A altura segue o Figma e a largura acompanha a proporção, para não distorcer
+        em celulares mais estreitos ou mais largos.
+      */
+      .project-card__media--contabilizei img,
+      .project-card__media--tech-integra img { inset: auto; width: auto; height: auto; object-fit: fill; }
+      .project-card__media--contabilizei img { left: -215%; top: -25.47%; height: 125.47%; }
+      .project-card__media--tech-integra img { left: -68.36%; top: -23.06%; height: 125.17%; }
     }
   </style>
   <link rel="stylesheet" href="assets/liquid-glass.css">
