@@ -7,6 +7,7 @@
   const svg = inner => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
   const ICONS = {
     user: svg('<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>'),
+    grid: svg('<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>'),
     /* ícones das redes em cores da marca (Figma: componentes whatsapp / linkedin / instagram) */
     whatsapp: '<img src="assets/icon-whatsapp.svg" alt="" width="32" height="32">',
     linkedin: '<img src="assets/icon-linkedin.svg" alt="" width="32" height="32">',
@@ -18,11 +19,12 @@
   };
 
   const ABOUT = { id: 'sobre', icon: 'user', title: 'Sobre mim', desc: 'Trajetória e experiência', href: 'sobre.html' };
+  const PORTFOLIO = { id: 'portfolio', icon: 'grid', title: 'Portfólio', desc: 'Projetos e estudos de caso', href: 'index.html#projetos' };
   /* mesma ordem do Figma (Sobre mim desktop: LinkedIn e WhatsApp em cima, Email e Instagram embaixo) */
   const LINKS = [
     { id: 'linkedin', icon: 'linkedin', title: 'LinkedIn', desc: 'in/victor-brito-designer', href: 'https://www.linkedin.com/in/victor-brito-designer/' },
     { id: 'whatsapp', icon: 'whatsapp', title: 'WhatsApp', desc: 'Vamos falar do seu projeto', href: 'https://api.whatsapp.com/send/?phone=5511976625372&text&type=phone_number&app_absent=0' },
-    { id: 'email', icon: 'email', title: 'Email', desc: 'victor182b@gmail.com', href: 'mailto:victor182b@gmail.com' },
+    { id: 'email', icon: 'email', title: 'Email', desc: 'victor182b@gmail.com', href: 'mailto:victor182b@gmail.com?subject=Contato%20pelo%20portf%C3%B3lio' },
     { id: 'instagram', icon: 'instagram', title: 'Instagram', desc: '@victorbritodesign', href: 'https://www.instagram.com/victorbritodesign' },
   ];
 
@@ -36,8 +38,9 @@
   };
   const group = (label, items) => `<div class="mcards"><p class="mcards__label">${label}</p>${items.map(card).join('')}</div>`;
 
-  /* cards de link soltos na página (ex.: Sobre mim) */
-  document.querySelectorAll('[data-links]').forEach(el => { el.innerHTML = group(el.dataset.links || 'Links', LINKS); });
+  /* cards de link soltos na página (Sobre mim e /links); data-links-set="portfolio" mostra Portfólio e Sobre mim */
+  const SETS = { links: LINKS, portfolio: [PORTFOLIO, ABOUT] };
+  document.querySelectorAll('[data-links]').forEach(el => { el.innerHTML = group(el.dataset.links || 'Links', SETS[el.dataset.linksSet || 'links']); });
 
   /* botão + painel do menu */
   const header = document.querySelector('.site-header .header');

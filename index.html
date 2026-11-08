@@ -332,20 +332,6 @@
       width: 140.27%;
       height: 129.11%;
     }
-    .project-card__media--tech-integra img {
-      inset: auto;
-      left: -24.42%;
-      top: -10%;
-      width: 148.85%;
-      height: 111.59%;
-    }
-    .project-card__media--omaha img {
-      inset: auto;
-      left: -20.91%;
-      top: -23.23%;
-      width: 141.63%;
-      height: 147.22%;
-    }
     .project-card::after {
       content: "";
       position: absolute;
@@ -489,9 +475,7 @@
       .testimonials__grid { grid-template-columns: 1fr; max-width: 584px; margin: 0 auto; }
 
       /* em telas menores o enquadramento fixo distorce a imagem: volta para "cover" mantendo o foco */
-      .project-card__media--contabilizei img,
-      .project-card__media--tech-integra img,
-      .project-card__media--omaha img { inset: 0; width: 100%; height: 100%; }
+      .project-card__media--contabilizei img { inset: 0; width: 100%; height: 100%; }
       .project-card__media--contabilizei img { object-position: 59% 57%; }
     }
 
@@ -552,6 +536,7 @@
       </a>
       <nav class="nav">
         <a href="sobre.html" class="nav__link">Sobre mim</a>
+        <a href="links.html" class="nav__link">Links</a>
         <a href="https://api.whatsapp.com/send/?phone=5511976625372&amp;text&amp;type=phone_number&amp;app_absent=0" target="_blank" rel="noopener" class="btn">Contato</a>
       </nav>
     </header>
@@ -612,27 +597,15 @@
             <span class="project-card__link">Ver projeto <img src="assets/icon-arrow-right.svg" alt="" width="16" height="16"></span>
           </a>
 
-          <div class="projects__row">
-            <a href="tech-integra.html" class="project-card" data-reveal>
-              <div class="project-card__media project-card__media--tech-integra" aria-hidden="true">
-                <img src="assets/Imagem do evento.jpg" alt="">
-              </div>
-              <span class="project-card__tag">Identidade Visual</span>
-              <h3 class="project-card__title">Evento Tech Integra</h3>
-              <p class="project-card__text">Evento para o time de tecnologia da Contabilizei com mais de 250 participantes e 8 horas de duração.</p>
-              <span class="project-card__link">Ver projeto <img src="assets/icon-arrow-right.svg" alt="" width="16" height="16"></span>
-            </a>
-
-            <a href="#" class="project-card" data-reveal>
-              <div class="project-card__media project-card__media--omaha" aria-hidden="true">
-                <img src="assets/11-11-25-1080X1350-ESTAT-BLACK-NOVEMBER-ARG6-ECONOMIZE-900-REAIS-ALLTYPE-FUNDO-PRETO.png" alt="">
-              </div>
-              <span class="project-card__tag">Visual Design - Criativos de Ads</span>
-              <h3 class="project-card__title">Omaha</h3>
-              <p class="project-card__text">Objetivo de aumento de Market Share em cidades com potencial de crescimento através da sazonalidade da Black Friday.</p>
-              <span class="project-card__link">Ver projeto <img src="assets/icon-arrow-right.svg" alt="" width="16" height="16"></span>
-            </a>
-          </div>
+          <a href="tech-integra.html" class="project-card" data-reveal>
+            <div class="project-card__media project-card__media--tech-integra" aria-hidden="true">
+              <img src="assets/Imagem do evento.jpg" alt="">
+            </div>
+            <span class="project-card__tag">Identidade Visual</span>
+            <h3 class="project-card__title">Evento Tech Integra</h3>
+            <p class="project-card__text">Evento para o time de tecnologia da Contabilizei com mais de 250 participantes e 8 horas de duração.</p>
+            <span class="project-card__link">Ver projeto <img src="assets/icon-arrow-right.svg" alt="" width="16" height="16"></span>
+          </a>
         </div>
       </div>
     </section>
