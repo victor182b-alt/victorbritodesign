@@ -19,6 +19,7 @@
 .mcard--whatsapp { --tint: 37, 211, 102; }
 .mcard--linkedin { --tint: 59, 142, 234; }
 .mcard--instagram { --tint: 225, 48, 108; }
+.mcard--email { --tint: 26, 59, 255; }
 .mcard:hover { transform: translateY(-2px); border-color: rgba(var(--tint), .45); }
 .mcard:active { transform: scale(.98); }
 .mcard__icon {
@@ -33,6 +34,9 @@
   border: 1px solid rgba(var(--tint), .3);
 }
 .mcard__icon svg { width: 22px; height: 22px; }
+/* ícones das redes/email já têm forma e cor próprias: ficam soltos, sem o quadradinho */
+.mcard__icon:has(img) { background: none; border: 0; }
+.mcard__icon img { display: block; width: 32px; height: 32px; }
 .mcard__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
 .mcard__title { font-size: 16px; font-weight: 700; }
 .mcard__desc { font-size: 14px; color: rgba(255, 255, 255, .6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

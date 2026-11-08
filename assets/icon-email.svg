@@ -1,0 +1,13 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="email">
+<path id="bg" d="M24 2H8C4.68629 2 2 4.68629 2 8V24C2 27.3137 4.68629 30 8 30H24C27.3137 30 30 27.3137 30 24V8C30 4.68629 27.3137 2 24 2Z" fill="url(#paint0_linear_5_2)"/>
+<path id="envelope" d="M22.5 9.5H9.5C8.11929 9.5 7 10.6193 7 12V20C7 21.3807 8.11929 22.5 9.5 22.5H22.5C23.8807 22.5 25 21.3807 25 20V12C25 10.6193 23.8807 9.5 22.5 9.5Z" fill="white"/>
+<path id="flap" d="M8.5 11.5L16 17L23.5 11.5" stroke="#1A3BFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_5_2" x1="26" y1="4" x2="6" y2="28" gradientUnits="userSpaceOnUse">
+<stop stop-color="#5C8BFF"/>
+<stop offset="1" stop-color="#0509FF"/>
+</linearGradient>
+</defs>
+</svg>

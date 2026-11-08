@@ -7,18 +7,22 @@
   const svg = inner => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
   const ICONS = {
     user: svg('<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>'),
-    whatsapp: svg('<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9 10.5c.5 1.6 1.9 3 3.5 3.5l1.2-1.1 2 .9v1.4c-3.6.5-7.4-3.3-6.9-6.9h1.4l.9 2z" stroke-width="1.4"/>'),
-    linkedin: svg('<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>'),
-    instagram: svg('<rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>'),
+    /* ícones das redes em cores da marca (Figma: componentes whatsapp / linkedin / instagram) */
+    whatsapp: '<img src="assets/icon-whatsapp.svg" alt="" width="32" height="32">',
+    linkedin: '<img src="assets/icon-linkedin.svg" alt="" width="32" height="32">',
+    instagram: '<img src="assets/icon-instagram.svg" alt="" width="32" height="32">',
+    email: '<img src="assets/icon-email.svg" alt="" width="32" height="32">',
     arrow: svg('<path d="M7 7h10v10"/><path d="M7 17 17 7"/>'),
     menu: svg('<line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/>'),
     close: svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'),
   };
 
   const ABOUT = { id: 'sobre', icon: 'user', title: 'Sobre mim', desc: 'Trajetória e experiência', href: 'sobre.html' };
+  /* mesma ordem do Figma (Sobre mim desktop: LinkedIn e WhatsApp em cima, Email e Instagram embaixo) */
   const LINKS = [
-    { id: 'whatsapp', icon: 'whatsapp', title: 'WhatsApp', desc: 'Vamos falar do seu projeto', href: 'https://api.whatsapp.com/send/?phone=5511976625372&text&type=phone_number&app_absent=0' },
     { id: 'linkedin', icon: 'linkedin', title: 'LinkedIn', desc: 'in/victor-brito-designer', href: 'https://www.linkedin.com/in/victor-brito-designer/' },
+    { id: 'whatsapp', icon: 'whatsapp', title: 'WhatsApp', desc: 'Vamos falar do seu projeto', href: 'https://api.whatsapp.com/send/?phone=5511976625372&text&type=phone_number&app_absent=0' },
+    { id: 'email', icon: 'email', title: 'Email', desc: 'victor182b@gmail.com', href: 'mailto:victor182b@gmail.com' },
     { id: 'instagram', icon: 'instagram', title: 'Instagram', desc: '@victorbritodesign', href: 'https://www.instagram.com/victorbritodesign' },
   ];
 

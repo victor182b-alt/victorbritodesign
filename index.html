@@ -209,6 +209,9 @@
       color: var(--color-text-muted);
     }
     .section__header--wide { max-width: 674px; }
+    /* título na largura toda (Figma: 1008px), descrição continua em 674px */
+    .section__header--full { max-width: none; }
+    .section__header--full .section__text { max-width: 674px; }
 
     /* Experiência (seção clara) */
     .section--light { background: #ffffff; color: #0a0a0a; }
@@ -254,15 +257,13 @@
       padding-bottom: 20px;
     }
     .timeline__logo {
-      display: grid;
-      place-items: center;
+      display: block;
       width: 48px;
       height: 48px;
       flex-shrink: 0;
-      background: #f0f0f0;
+      object-fit: cover;
+      border: 1px solid rgba(10, 10, 10, .08);
       border-radius: 8px;
-      font-size: 22px;
-      font-weight: 900;
     }
     .timeline__name { margin: 0; font-size: 18px; font-weight: 700; }
     .timeline__meta { margin: 2px 0 0; font-size: 14px; color: #666; }
@@ -390,7 +391,8 @@
     }
     .project-card__link img { display: block; width: 16px; height: 16px; }
 
-    /* Testimonials */
+    /* Testimonials (no desktop a faixa do ticker é só um invólucro; ela só roda no mobile) */
+    .testimonials .ticker__track { display: block; width: auto; }
     .testimonials__grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -506,10 +508,9 @@
       .hero__inner { gap: 32px; }
       .hero__main { gap: 40px; }
       /* foto vem primeiro, na largura toda */
-      .hero__image { order: -1; max-width: none; aspect-ratio: 350 / 380; }
-      .hero__title { font-size: 36px; }
+      .hero__image { order: -1; align-self: center; width: 200px; aspect-ratio: 200 / 167; }
+      .hero__title { font-size: 28px; }
       .hero__text { font-size: 18px; }
-      .hero__text br { display: none; }
       .hero__body { gap: 24px; }
       /* as três estatísticas continuam lado a lado, menores */
       .stats { gap: 8px; }
@@ -520,7 +521,17 @@
       .section__text { font-size: 16px; }
       .section__header { margin-bottom: 32px; }
       .ticker { margin-bottom: 32px; }
-      .testimonials__grid { gap: 16px; }
+      /*
+        Depoimentos viram um carrossel em ticker: a faixa vai até as bordas da tela
+        e rola sem parar (mesmo motor do ticker de logos), desacelerando ao tocar.
+      */
+      .testimonials { overflow: hidden; margin: 0 calc(var(--gutter) * -1); }
+      .testimonials .ticker__track { display: flex; width: max-content; will-change: transform; }
+      .testimonials:not(.is-running) .ticker__track { padding-left: var(--gutter); }
+      .testimonials__grid { display: flex; align-items: stretch; gap: 16px; max-width: none; margin: 0; padding: 0 16px 0 0; }
+      .testimonials__grid > li { flex: none; width: 300px; }
+      /* a faixa inteira já está em movimento: os cards não fazem a entrada individual */
+      .js .testimonials [data-reveal] { opacity: 1; transform: none; animation: none; }
       .timeline__roles { padding-left: 16px; }
       .timeline__info p { white-space: normal; }
     }
@@ -553,7 +564,7 @@
           <div class="hero__content">
             <h1 class="hero__title" data-reveal style="--delay: .1s">Victor Brito, Product, UX e Visual Designer.</h1>
             <div class="hero__body">
-              <p class="hero__text" data-reveal style="--delay: .25s">Apaixonado por criar interfaces intuitivas e atraentes que melhoram a experiência do usuário <br>e geram impacto real no negócio.</p>
+              <p class="hero__text" data-reveal style="--delay: .25s">Apaixonado por criar interfaces intuitivas e atraentes que melhoram a experiência do usuário e geram impacto no negócio.</p>
               <div class="hero__actions" data-reveal style="--delay: .4s">
                 <a href="#projetos" class="btn">Ver trabalhos</a>
                 <a href="https://api.whatsapp.com/send/?phone=5511976625372&amp;text&amp;type=phone_number&amp;app_absent=0" target="_blank" rel="noopener" class="btn btn--outline">Contato</a>
@@ -650,7 +661,7 @@
         <div class="timeline" data-reveal>
           <article class="timeline__company">
             <header class="timeline__header">
-              <span class="timeline__logo" aria-hidden="true">C.</span>
+              <img class="timeline__logo" src="assets/logo-C.jpg" alt="" width="48" height="48">
               <div>
                 <h3 class="timeline__name">Contabilizei</h3>
                 <p class="timeline__meta">Tempo integral · 4 a 10 m · Híbrido</p>
@@ -682,55 +693,59 @@
 
     <section class="section section--glow" id="depoimentos" aria-labelledby="depoimentos-titulo">
       <div class="container">
-        <div class="section__header section__header--wide" data-reveal>
+        <div class="section__header section__header--full" data-reveal>
           <h2 class="section__title" id="depoimentos-titulo">O que dizem sobre o meu trabalho</h2>
           <p class="section__text">Clientes e parceiros com quem tive o prazer de criar produtos e marcas.</p>
         </div>
 
-        <ul class="testimonials__grid">
-          <li data-reveal>
-            <figure class="testimonial">
-              <blockquote class="testimonial__quote">
-                <span class="testimonial__mark" aria-hidden="true">&ldquo;</span>
-                <p>O Victor é um profissional multitarefas, que atua como visual e product designer com excelência, e consegue caminhar facilmente entre as áreas de design, produto e negócio. Além disso, ele tem uma ótima capacidade analítica e excelente relacionamento interpessoal.
+        <div class="testimonials" data-ticker data-ticker-media="(max-width: 600px)" aria-label="Depoimentos">
+          <div class="ticker__track">
+            <ul class="testimonials__grid">
+              <li data-reveal>
+                <figure class="testimonial">
+                  <blockquote class="testimonial__quote">
+                    <span class="testimonial__mark" aria-hidden="true">&ldquo;</span>
+                    <p>O Victor é um profissional multitarefas, que atua como visual e product designer com excelência, e consegue caminhar facilmente entre as áreas de design, produto e negócio. Além disso, ele tem uma ótima capacidade analítica e excelente relacionamento interpessoal.
 
 Com sua ajuda, nós conseguimos melhorar a apresentação de onboarding dos clientes, aumentando a nota de satisfação dos mesmos. Também entregamos campanhas de performance que trouxeram resultados efetivos para a empresa, com foco na conversão de usuários em clientes.</p>
-              </blockquote>
-              <figcaption>
-                <cite class="testimonial__name">Jéssica Zava Russilo</cite>
-                <span class="testimonial__role">Content Designer</span>
-              </figcaption>
-            </figure>
-          </li>
-          <li data-reveal>
-            <figure class="testimonial">
-              <blockquote class="testimonial__quote">
-                <span class="testimonial__mark" aria-hidden="true">&ldquo;</span>
-                <p>Brito é um profissional excepcional, tenho grande admiração e posso atestar sua dedicação, inteligência e que sempre teve um notável potencial de evolução rápida.
+                  </blockquote>
+                  <figcaption>
+                    <cite class="testimonial__name">Jéssica Zava Russilo</cite>
+                    <span class="testimonial__role">Content Designer</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li data-reveal>
+                <figure class="testimonial">
+                  <blockquote class="testimonial__quote">
+                    <span class="testimonial__mark" aria-hidden="true">&ldquo;</span>
+                    <p>Brito é um profissional excepcional, tenho grande admiração e posso atestar sua dedicação, inteligência e que sempre teve um notável potencial de evolução rápida.
 
 Conhecido por sua educação, dedicação e concentração no trabalho. Sua capacidade de aprender e se adaptar rapidamente, aliada à sua criatividade, o tornam um talento promissor.
 
 Sua colaboração eficaz e compromisso com a excelência em suas entregas de projetos, destacam-no como um profissional confiável e dedicado.</p>
-              </blockquote>
-              <figcaption>
-                <cite class="testimonial__name">Patricia Vélez</cite>
-                <span class="testimonial__role">Visual Designer</span>
-              </figcaption>
-            </figure>
-          </li>
-          <li data-reveal>
-            <figure class="testimonial">
-              <blockquote class="testimonial__quote">
-                <span class="testimonial__mark" aria-hidden="true">&ldquo;</span>
-                <p>O incrível trabalho e a vontade de aprender do Victor são motivos de muita inspiração. Parabéns pelas realizações!</p>
-              </blockquote>
-              <figcaption>
-                <cite class="testimonial__name">Mariana Tami</cite>
-                <span class="testimonial__role">Bilingual COO</span>
-              </figcaption>
-            </figure>
-          </li>
-        </ul>
+                  </blockquote>
+                  <figcaption>
+                    <cite class="testimonial__name">Patricia Vélez</cite>
+                    <span class="testimonial__role">Visual Designer</span>
+                  </figcaption>
+                </figure>
+              </li>
+              <li data-reveal>
+                <figure class="testimonial">
+                  <blockquote class="testimonial__quote">
+                    <span class="testimonial__mark" aria-hidden="true">&ldquo;</span>
+                    <p>O incrível trabalho e a vontade de aprender do Victor são motivos de muita inspiração. Parabéns pelas realizações!</p>
+                  </blockquote>
+                  <figcaption>
+                    <cite class="testimonial__name">Mariana Tami</cite>
+                    <span class="testimonial__role">Bilingual COO</span>
+                  </figcaption>
+                </figure>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -785,7 +800,8 @@ Sua colaboração eficaz e compromisso com a excelência em suas entregas de pro
       /* Ticker de logos (estilo Framer Ticker) */
       document.querySelectorAll('[data-ticker]').forEach(ticker => {
         const track = ticker.querySelector('.ticker__track');
-        const original = track.querySelector('.ticker__set');
+        const original = track.firstElementChild;
+        const media = ticker.dataset.tickerMedia ? window.matchMedia(ticker.dataset.tickerMedia) : null;
         const SPEED = 60;         // px por segundo
         const HOVER_FACTOR = 0.2; // velocidade relativa no hover
         const EASE = 4;           // quão rápido a velocidade se ajusta (por segundo)
@@ -799,8 +815,17 @@ Sua colaboração eficaz e compromisso com a excelência em suas entregas de pro
         let visible = false;
 
         // duplica o conjunto até cobrir a largura da faixa + um conjunto extra para o loop
+        const reset = () => {
+          track.querySelectorAll(':scope > [aria-hidden]').forEach(c => c.remove());
+          track.style.transform = '';
+          ticker.classList.remove('is-running');
+          setWidth = 0;
+          offset = 0;
+        };
+
         const fill = () => {
-          track.querySelectorAll('.ticker__set[aria-hidden]').forEach(c => c.remove());
+          reset();
+          if (media && !media.matches) { stop(); return; }
           setWidth = original.getBoundingClientRect().width;
           if (!setWidth) return;
           const copies = Math.ceil(ticker.clientWidth / setWidth) + 1;
@@ -808,6 +833,7 @@ Sua colaboração eficaz e compromisso com a excelência em suas entregas de pro
             const clone = original.cloneNode(true);
             clone.setAttribute('aria-hidden', 'true');
             clone.querySelectorAll('img').forEach(img => { img.alt = ''; });
+            clone.querySelectorAll('[data-reveal]').forEach(el => el.removeAttribute('data-reveal'));
             track.appendChild(clone);
           }
           ticker.classList.add('is-running');
@@ -827,6 +853,8 @@ Sua colaboração eficaz e compromisso com a excelência em suas entregas de pro
 
         ticker.addEventListener('mouseenter', () => { target = SPEED * HOVER_FACTOR; });
         ticker.addEventListener('mouseleave', () => { target = SPEED; });
+        ticker.addEventListener('touchstart', () => { target = SPEED * HOVER_FACTOR; }, { passive: true });
+        ticker.addEventListener('touchend', () => { target = SPEED; });
 
         // só anima enquanto a faixa está visível
         new IntersectionObserver(([entry]) => {
@@ -844,6 +872,7 @@ Sua colaboração eficaz e compromisso com a excelência em suas entregas de pro
         const imgs = [...original.querySelectorAll('img')];
         Promise.all(imgs.map(img => img.complete ? null : new Promise(r => { img.onload = img.onerror = r; })))
           .then(() => { fill(); start(); });
+        if (media) media.addEventListener('change', () => { fill(); start(); });
       });
 
       /* Contagem dos big numbers */
