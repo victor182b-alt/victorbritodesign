@@ -153,6 +153,9 @@
       height: auto;
       animation: lpScroll 48s ease-in-out var(--scroll-delay, 0s) infinite alternate;
     }
+    .phone__viewport.is-draggable { cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+    .phone__viewport.is-dragging { cursor: grabbing; }
+    .phone__viewport.is-draggable img { animation: none; will-change: transform; pointer-events: none; }
     @keyframes lpScroll {
       0%, 8%    { transform: translateY(0); }
       92%, 100% { transform: translateY(calc(-100% + 100cqh)); }
@@ -426,10 +429,13 @@
       .about { grid-template-columns: 1fr; gap: 24px; }
       .facts { grid-template-columns: repeat(2, 1fr); gap: 20px 16px; }
       .hypotheses li { grid-template-columns: 1fr; gap: 8px; }
-      .heatmaps { gap: 12px; padding: 24px 16px; }
+      .heatmaps { align-items: flex-start; gap: 12px; padding: 24px 16px; }
       .heatmap__crop { height: auto; width: 100%; }
-      .heatmaps figure:nth-child(1), .heatmaps figure:nth-child(2) { width: 42%; }
-      .heatmaps figure:nth-child(3) { width: 8%; }
+      /* flex-grow = largura/altura de cada recorte: as três imagens ficam com a mesma altura */
+      .heatmaps figure { flex: .5313 1 0; min-width: 0; }
+      .heatmaps figure:nth-child(2) { flex-grow: .5253; }
+      .heatmaps figure:nth-child(3) { flex-grow: .0968; }
+      .heatmaps figure:nth-child(3) figcaption { white-space: nowrap; }
       .heatmaps figcaption { font-size: 12px; }
       .bignums { grid-template-columns: repeat(2, 1fr); gap: 32px 24px; }
       .bignum dd { font-size: 64px; }
@@ -682,7 +688,7 @@
           <div class="phone">
             <div class="phone__screen">
               <div class="status status--lp"><span>9:41</span><svg aria-hidden="true"><use href="#status-icons"/></svg></div>
-              <div class="phone__viewport"><img src="assets/formalizar/lp-mobile.jpg" alt="" loading="lazy" width="336" height="4096"></div>
+              <div class="phone__viewport" data-drag-scroll><img src="assets/formalizar/lp-mobile.jpg" draggable="false" alt="" loading="lazy" width="336" height="4096"></div>
             </div>
           </div>
           </div>
@@ -752,6 +758,79 @@
       const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
+
+      /*
+        LP dentro do celular: rola sozinha (ida e volta, com pausa nas pontas) e dá para arrastar.
+        Ao soltar, segue com inércia e, depois de alguns segundos parada, volta a rolar sozinha.
+        No toque, ao chegar no topo ou no fim da LP, o arraste passa a rolar a página.
+      */
+      document.querySelectorAll('[data-drag-scroll]').forEach(view => {
+        const img = view.querySelector('img');
+        const AUTO_MS = 40000, END_PAUSE = 3500, IDLE_RESUME = 2500;
+        let max = 0, pos = 0, dir = 1, speed = 0, vel = 0;
+        let mode = 'auto', pauseUntil = performance.now() + 4000, idleUntil = 0;
+        let pointer = null, lastY = 0, lastT = 0, visible = false, raf = 0, prev = 0;
+
+        const measure = () => { max = Math.max(0, img.offsetHeight - view.clientHeight); pos = Math.min(pos, max); paint(); };
+        const paint = () => { img.style.transform = `translate3d(0, ${-pos}px, 0)`; };
+        view.classList.add('is-draggable');
+
+        const frame = now => {
+          const dt = Math.min(now - prev, 64); prev = now;
+          if (mode === 'inertia') {
+            pos += vel * dt; vel *= Math.exp(-dt / 325);
+            if (pos <= 0 || pos >= max) { pos = Math.min(Math.max(pos, 0), max); vel = 0; }
+            if (Math.abs(vel) < .02) { mode = 'idle'; idleUntil = now + IDLE_RESUME; }
+          } else if (mode === 'idle' && now > idleUntil) {
+            mode = 'auto'; speed = 0;
+            if (pos >= max) dir = -1; else if (pos <= 0) dir = 1;
+          } else if (mode === 'auto' && max > 0 && now > pauseUntil) {
+            const target = max / AUTO_MS;
+            const left = dir > 0 ? max - pos : pos;
+            const ease = Math.min(1, left / (max * .06) + .08); /* desacelera perto das pontas */
+            speed += (target - speed) * Math.min(1, dt / 600);
+            pos += dir * speed * ease * dt;
+            if (pos >= max || pos <= 0) {
+              pos = Math.min(Math.max(pos, 0), max);
+              dir = pos >= max ? -1 : 1; speed = 0; pauseUntil = now + END_PAUSE;
+            }
+          }
+          paint();
+          raf = visible ? requestAnimationFrame(frame) : 0;
+        };
+        const start = () => { if (!raf && visible) { prev = performance.now(); raf = requestAnimationFrame(frame); } };
+
+        view.addEventListener('pointerdown', e => {
+          if (pointer !== null || (e.pointerType === 'mouse' && e.button !== 0)) return;
+          pointer = e.pointerId; mode = 'drag'; vel = 0;
+          lastY = e.clientY; lastT = e.timeStamp;
+          try { view.setPointerCapture(e.pointerId); } catch (err) {}
+          view.classList.add('is-dragging');
+        });
+        view.addEventListener('pointermove', e => {
+          if (e.pointerId !== pointer) return;
+          const dy = e.clientY - lastY, dt = Math.max(e.timeStamp - lastT, 1);
+          lastY = e.clientY; lastT = e.timeStamp;
+          const next = pos - dy;
+          const clamped = Math.min(Math.max(next, 0), max);
+          if (e.pointerType !== 'mouse' && next !== clamped) window.scrollBy(0, next - clamped);
+          pos = clamped;
+          vel = vel * .6 + (-dy / dt) * .4;
+          paint();
+        });
+        const release = e => {
+          if (e.pointerId !== pointer) return;
+          pointer = null; mode = 'inertia';
+          if (e.timeStamp - lastT > 80) vel = 0; /* segurou parado antes de soltar */
+          view.classList.remove('is-dragging');
+        };
+        view.addEventListener('pointerup', release);
+        view.addEventListener('pointercancel', release);
+
+        new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; start(); }).observe(view);
+        if (img.complete) measure(); else img.addEventListener('load', measure);
+        window.addEventListener('resize', measure);
+      });
 
       /* Big numbers dos resultados: contam do zero quando aparecem na tela */
       const DURATION = 2000;
